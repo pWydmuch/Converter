@@ -1,9 +1,9 @@
-package com.example.konwerter.model;
+package com.example.converter.service;
 
 import org.springframework.stereotype.Service;
 
 @Service
-public class KonArabRzym {
+public class ConverterToRoman {
 
     private static boolean czyPierwszyObieg; //  potrzebne zeby tylko po wprowadzeniu 0 przy podawaniu liczby
     // robil sie ostatni if w sprawdzwartosc()
@@ -20,7 +20,7 @@ public class KonArabRzym {
         czyBlad = false;
     }
 
-    private KonArabRzym() {
+    private ConverterToRoman() {
 
 //        sprawdzWartosc(liczba);
     }

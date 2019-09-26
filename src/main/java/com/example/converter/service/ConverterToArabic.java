@@ -1,16 +1,16 @@
-package com.example.konwerter.model;
+package com.example.converter.service;
 
 import org.springframework.stereotype.Service;
 
 @Service
-public class KonRzymArab {
+public class ConverterToArabic {
 
     private String rzymska;
     private int liczba;
     private boolean czyNiepoprawneDane;
     private boolean czyBlad;
     //-------------------------------------------------------------------------------
-    public KonRzymArab() {
+    public ConverterToArabic() {
         liczba = 0;
         czyBlad= false;
         czyNiepoprawneDane = false;
@@ -30,7 +30,7 @@ public class KonRzymArab {
 //    }
 
     //********************************************----KONWERTER------********************************************
-    public int doDziela(String rzymska) {
+    public int convert(String rzymska) {
         this.rzymska = rzymska;
         for (int licznik = 0; licznik < rzymska.length(); licznik++) {
             if (!czyBlad&& !czyNiepoprawneDane)

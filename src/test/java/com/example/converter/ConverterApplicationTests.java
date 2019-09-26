@@ -1,4 +1,4 @@
-package com.example.konwerter;
+package com.example.converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class KonwerterApplicationTests {
+public class ConverterApplicationTests {
 
     @Test
     public void contextLoads() {
