@@ -1,8 +1,11 @@
 package com.example.converter.service;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 @Service
+//@Scope(WebApplicationContext.SCOPE_REQUEST)
 public class ConverterToRoman {
 
     private static boolean czyPierwszyObieg; //  potrzebne zeby tylko po wprowadzeniu 0 przy podawaniu liczby
@@ -20,7 +23,7 @@ public class ConverterToRoman {
         czyBlad = false;
     }
 
-    private ConverterToRoman() {
+    public ConverterToRoman() {
 
 //        sprawdzWartosc(liczba);
     }
