@@ -1,7 +1,5 @@
-.gradle
-/build/
-!gradle/wrapper/gradle-wrapper.jar
-/target
+/target/
+!.mvn/wrapper/maven-wrapper.jar
 client-secret.json
 ### STS ###
 .apt_generated
