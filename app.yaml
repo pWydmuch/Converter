@@ -1,2 +1,3 @@
 runtime: java
-runtime_config: openjdk8
+runtime_config: 
+    jdk: openjdk8
