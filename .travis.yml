@@ -3,7 +3,7 @@ jdk: openjdk8
 install:
 - mvn -N io.takari:maven:wrapper
 - "./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
-config: ./src/main/webapp/WEB-INF/appengine-web.xml
+config: "./src/main/webapp/WEB-INF/appengine-web.xml"
 deploy:
   provider: gae
   keyfile: client-secret.json
@@ -11,4 +11,3 @@ deploy:
 before_install:
 - openssl aes-256-cbc -K $encrypted_55118ca32fc7_key -iv $encrypted_55118ca32fc7_iv
   -in client-secret.json.enc -out client-secret.json -d
-- chmod +x mvnw
