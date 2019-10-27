@@ -113,6 +113,8 @@ public class ConverterToArabic {
         else
             return '0'; // any char, it won't be considered anyway, it's needed only because this method
         // has to return sth
+        
+        //moze w takim wypadku lepiej throw new RuntimeException("Should not happen");
 
     }
     //********************************************----SPRAWDZACZE----*********************************************************
