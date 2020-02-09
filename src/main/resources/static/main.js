@@ -9,8 +9,8 @@ form.addEventListener('submit',event => {
     event.preventDefault()
     const number = enterInput.value
 //    const dest = currentDestination
-    console.log(`http://localhost:9090/${currentDestination}/${number}`)
-    fetch(`http://localhost:9090/${currentDestination}/${number}`)
+    console.log(`http://localhost:8080/${currentDestination}/${number}`)
+    fetch(`http://localhost:8080/${currentDestination}/${number}`)
         .then(resp => resp.text())
         .then(resp => {
         console.log(resp)
