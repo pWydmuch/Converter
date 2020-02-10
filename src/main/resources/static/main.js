@@ -4,18 +4,16 @@ const toRomanRadio = document.querySelector('#to-roman')
 const enterInput = document.querySelector('#enter-input')
 const result = document.querySelector('#result')
 const alert = document.querySelector('.alert')
-let currentDestination = 'arabska'
+let currentDestination = 'arabic-equiv'
 
 form.addEventListener('submit', event => {
     event.preventDefault()
     const number = enterInput.value
-    fetch(`http://localhost:8080/${currentDestination}/${number}`)
+    fetch(`http://localhost:8080/${currentDestination}?number=${number}`)
         .then((response) => {
             if (response.ok) fillResult(response.text())
             else showErrorMessage(response.text())
         })
-
-
 })
 
 const fillResult = (responsePromise) => {
@@ -34,16 +32,16 @@ const showErrorMessage = (responsePromise) => {
 toRomanRadio.addEventListener('click', () => {
     result.value = ""
     enterInput.value= ""
-    alert.style.display = 'none'
-    console.log('switch to roman')
-    currentDestination = 'rzymska'
+    enterInput.focus()
+    alert.style.display = 'none'    
+    currentDestination = 'roman-equiv'
 })
 
 
 toArabicRadio.addEventListener('click', () => {
-    enterInput.value = ""
     result.value = ""
+    enterInput.value = ""
+    enterInput.focus()
     alert.style.display = 'none'
-    console.log('switch to arab')
-    currentDestination = 'arabska'
+    currentDestination = 'arabic-equiv'
 })

@@ -11,26 +11,28 @@
 </head>
 
 <body>
-    <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+    <div class=" cos d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
         <h1 class="mb-5">CONVERTER</h1>
 
         <form class="my-form d-flex flex-column " autocomplete="off">
-            <div >
-                <input type="radio" name="number" id="to-arabic" checked>
-                <label for="to-arabic">Roman number to arabic one</label>
-            </div>
-            <div>
-                <input type="radio" name="number" id="to-roman">
-                <label for="to-roman">Arabic number to roman one</label>
+            <div class="mb-5">
+                <div>
+                    <input type="radio" name="number" id="to-arabic" checked>
+                    <label for="to-arabic">Roman number to arabic one</label>
+                </div>
+                <div>
+                    <input type="radio" name="number" id="to-roman">
+                    <label for="to-roman">Arabic number to roman one</label>
+                </div>
             </div>
             <div>
                 <div>
                     <label for="enter-input">Number:</label>
-                    <input type="text" id="enter-input" autofocus />
+                    <input class="ml-2  float-right" type="text" id="enter-input" autofocus />
                 </div>
                 <div class="pt-2">
                     <label for="result">Result:</label>
-                    <input type="text" id="result" disabled>
+                    <input class="ml-2 float-right" type="text" id="result" disabled>
                 </div>
             </div>
 

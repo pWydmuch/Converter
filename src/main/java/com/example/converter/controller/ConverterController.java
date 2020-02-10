@@ -10,7 +10,8 @@ import com.example.converter.service.ConverterToArabic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
+//TODO usun CrossOrigin
+@CrossOrigin("*")
 @RestController
 public class ConverterController {
 
@@ -25,18 +26,21 @@ public class ConverterController {
         this.converterToArabic = converterToArabic;
     }
 
-    @GetMapping("/arabska/{roman}")
-    public String getConvertedToArab(@PathVariable("roman") String romanNumber) throws BadRomanNumberException {
+    @GetMapping("/arabic-equiv")
+    public String getConvertedToArab(@RequestParam("number") String romanNumber) throws BadRomanNumberException {
         romanNumber = romanNumber.toUpperCase();
         int arabicEquiv = converterToArabic.convert(new RomanContainer(romanNumber));
         return String.valueOf(arabicEquiv);
     }
 
-    @GetMapping("/rzymska/{arabska}")
-    public String getConvertedToRoman(@PathVariable("arabska") String arabicNumberString) throws BadArabicNumberException {
-        int arabicNumber = Integer.parseInt(arabicNumberString);
-        String romanEquiv = converterToRoman.convert(new ArabicContainer(arabicNumber));
-        return romanEquiv;
+    @GetMapping("/roman-equiv")
+    public String getConvertedToRoman(@RequestParam("number") String arabicNumberString) throws BadArabicNumberException {
+        try {
+            int arabicNumber = Integer.parseInt(arabicNumberString);
+            return converterToRoman.convert(new ArabicContainer(arabicNumber));
+        }catch(NumberFormatException e){
+            throw new BadArabicNumberException("You can use digits only");
+        }
     }
 
 

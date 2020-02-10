@@ -38,7 +38,7 @@ public class ConverterToRoman {
         else if (arabicNumber > 899 && arabicNumber <= 3999)
             appendMax3999(arabicContainer);
         if (arabicNumber < 0 || arabicNumber >= 4000) {
-            throw new BadArabicNumberException("Number must be in the renge from 1 to 3999");
+            throw new BadArabicNumberException("The number must be between 1 and 3999");
         }
 
     }
@@ -56,7 +56,7 @@ public class ConverterToRoman {
         int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
         if (arabicNumber == 4) {
             romanEquiv.append('I');
-
+            romanEquiv.append('V');
         }
         if (arabicNumber >= 5) {
             romanEquiv.append('V');

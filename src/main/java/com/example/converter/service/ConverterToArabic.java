@@ -4,6 +4,11 @@ import com.example.converter.exceptions.BadRomanNumberException;
 import com.example.converter.model.RomanContainer;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Service
 public class ConverterToArabic {
 
@@ -74,7 +79,7 @@ public class ConverterToArabic {
                 romanContainer.setArabicEquiv(arabicEquiv + 1000);
 
         } else
-            throw new BadRomanNumberException("You only can use roman digits");
+            throw new BadRomanNumberException("You can use roman digits only ");
 
     }
 
@@ -150,8 +155,29 @@ public class ConverterToArabic {
                 (romanChar == 'M' && getPrevRomanChar(index, romanNumber) == 'C' && getPrevRomanChar(index - 1, romanNumber) == 'C');
     }
 
-    private void cod(){
+//    private boolean isTwoTest(int index, char romanChar, String romanNumber){
+//        Map<Character, Character> chars = new HashMap<>();
+//        chars.put('V','I');
+//        chars.put('X','I');
+//        chars.put('L','X');
+//        chars.put('C','X');
+//        chars.put('D','C');
+//        chars.put('M','V');
+//
+//        List<Boolean> wyniki = chars.entrySet().
+//                stream()
+//                .map(entry -> cod(romanChar,entry.getKey(),entry.getValue(),romanNumber,index))
+//                .collect(Collectors.toList());
+//
+//        Boolean aBoolean = wyniki.stream().findFirst(wynik -> wynik == true).get();
+//        return aBoolean;
+//
+//    }
 
+    private boolean cod(char romanChar, char baseChar ,char prevChar, String romanNumber, int index){
+        return romanChar == baseChar
+                && getPrevRomanChar(index, romanNumber) == prevChar
+                && getPrevRomanChar(index - 1, romanNumber) == prevChar;
     }
 }
 
