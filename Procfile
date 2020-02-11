@@ -1,1 +1,1 @@
-web: ./mvn spring-boot:run -Dserver.port=8080
+web: ./mvnw spring-boot:run -Dserver.port=8080
