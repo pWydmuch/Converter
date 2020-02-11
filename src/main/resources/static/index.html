@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Converter</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="./main.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+        <h1 class="mb-5">CONVERTER</h1>
+
+        <form class="my-form d-flex flex-column " autocomplete="off">
+            <div class="mb-5">
+                <div>
+                    <input type="radio" name="number" id="to-arabic" checked>
+                    <label for="to-arabic">Roman number to arabic one</label>
+                </div>
+                <div>
+                    <input type="radio" name="number" id="to-roman">
+                    <label for="to-roman">Arabic number to roman one</label>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="enter-input">Number:</label>
+                    <input class="ml-2  float-right" type="text" id="enter-input" autofocus />
+                </div>
+                <div class="pt-2">
+                    <label for="result">Result:</label>
+                    <input class="ml-2 float-right" type="text" id="result" disabled>
+                </div>
+            </div>
+
+            <input class="mt-3" type="submit" value="Convert">
+            <div class="mt-2 alert alert-danger ">
+
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

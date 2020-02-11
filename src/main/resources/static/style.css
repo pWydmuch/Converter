@@ -1,0 +1,46 @@
+.alert {
+    display: none;
+}
+
+
+
+body{
+    font-size: 1.8em;
+}
+
+h1{
+    font-size: 2.2em;
+}
+
+
+@media only screen and (max-width: 1024px){
+    body{
+        font-size: 2.2em;
+    }
+
+    form {
+        width: 70%;
+        /* height: 100%; */
+    }
+}
+
+@media only screen and (max-width: 600px){
+    body{
+        font-size: 1.3em;
+    }
+    
+    form {
+        width: 95%;
+        height: 100%;
+    }
+}
+@media only screen and (max-width: 320px){
+    body{
+        font-size: 1.1em;
+    }
+    
+    form {
+        width: 95%;
+        height: 100%;
+    }
+}
