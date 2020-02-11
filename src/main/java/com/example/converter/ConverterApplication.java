@@ -1,15 +1,8 @@
 package com.example.converter;
 
-import com.example.converter.service.ConverterToArabic;
-import com.example.converter.service.ConverterToRoman;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootApplication
 public class ConverterApplication extends SpringBootServletInitializer {

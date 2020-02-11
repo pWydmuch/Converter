@@ -1,13 +1,8 @@
-package com.example.converter.service;
+package com.example.converter.services;
 
 import com.example.converter.exceptions.BadRomanNumberException;
 import com.example.converter.model.RomanContainer;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class ConverterToArabic {
@@ -87,7 +82,7 @@ public class ConverterToArabic {
         if ((index - 1) >= 0)
             return romanNumber.charAt(index - 1);
         else
-            return '0';
+            return '0'; //any char different from roman digits, it won't be consider anyway
     }
 
 
@@ -95,22 +90,18 @@ public class ConverterToArabic {
         if ((index + 1) < romanNumber.length())
             return romanNumber.charAt(index + 1);
         else
-            return '0'; // any char, it won't be considered anyway, it's needed only because this method
-        // has to return sth
-
-        //moze w takim wypadku lepiej throw new RuntimeException("Should not happen");
-
+            return '0';
     }
 
 
-    private boolean isNextCharWrong(int indexOdFirstCharToCheck, int index, String romanNumber) {
+    private boolean isNextCharWrong(int numberOfFirstCharToCheck, int index, String romanNumber) {
         char[] romanChars = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
-        for (int i = indexOdFirstCharToCheck; i < romanChars.length; i++) {
+        for (int i = numberOfFirstCharToCheck; i < romanChars.length; i++) {
             if (getNextRomanChar(index, romanNumber) == romanChars[i])
-                return true; // sth wrong happened
-            //Perhpas  it would look better if method returned true when there's no wrong, but then i would have to change condition statements in if-s which calls the method
+                return true;
+
         }
-        return false; // everything's all right
+        return false;
     }
 
     private boolean isOrderOfCharsWrong(int index, char romanChar, String romanNumber) {
@@ -121,19 +112,10 @@ public class ConverterToArabic {
 
     private boolean isTooManyTheSameConsecutiveChars(int index, char romanChar, String romanNumber) {
 
-        if ((romanChar == 'I' || romanChar == 'X' || romanChar == 'C' || romanChar == 'M')
+        return ((romanChar == 'I' || romanChar == 'X' || romanChar == 'C' || romanChar == 'M')
                 && romanChar == getNextRomanChar(index, romanNumber)
                 && romanChar == getNextRomanChar(index + 1, romanNumber)
-                && romanChar == getNextRomanChar(index + 2, romanNumber))// if 4 consecutive numerals are the same
-            return true;
-
-        if ((romanChar == 'V' || romanChar == 'L' || romanChar == 'D')
-                && romanChar == getNextRomanChar(index + 1, romanNumber))
-            return true; // isNextCharWrong() exludes possibility of occuring e.g. VV
-        // but it doesn't exlude situation such as VIV
-
-        return false;
-
+                && romanChar == getNextRomanChar(index + 2, romanNumber));// if 4 consecutive numerals are the same
     }
 
     private boolean isCharBetweenTwoTheSameChars(int index, char romanChar, String romanNumber) { // prevents from situations like these IVI, CDC,XCX,
@@ -143,7 +125,10 @@ public class ConverterToArabic {
                 (romanChar == 'L' && getPrevRomanChar(index, romanNumber) == 'X' && getNextRomanChar(index, romanNumber) == 'X') ||
                 (romanChar == 'C' && getPrevRomanChar(index, romanNumber) == 'X' && getNextRomanChar(index, romanNumber) == 'X') ||
                 (romanChar == 'D' && getPrevRomanChar(index, romanNumber) == 'C' && getNextRomanChar(index, romanNumber) == 'C') ||
-                (romanChar == 'M' && getPrevRomanChar(index, romanNumber) == 'C' && getNextRomanChar(index, romanNumber) == 'C');
+                (romanChar == 'M' && getPrevRomanChar(index, romanNumber) == 'C' && getNextRomanChar(index, romanNumber) == 'C') ||
+                ((romanChar == 'V' || romanChar == 'L' || romanChar == 'D') && romanChar == getNextRomanChar(index + 1, romanNumber)) // isNextCharWrong() prevents possibility of occurring e.g. VV
+//        // but it doesn't prevent situation such as VIV
+                ;
     }
 
     private boolean isTwoTheSameCharsBeforeChar(int index, char romanChar, String romanNumber) { // checks how many the same numerals are before the cartain numeral, there can't be more than one in a row
@@ -155,30 +140,7 @@ public class ConverterToArabic {
                 (romanChar == 'M' && getPrevRomanChar(index, romanNumber) == 'C' && getPrevRomanChar(index - 1, romanNumber) == 'C');
     }
 
-//    private boolean isTwoTest(int index, char romanChar, String romanNumber){
-//        Map<Character, Character> chars = new HashMap<>();
-//        chars.put('V','I');
-//        chars.put('X','I');
-//        chars.put('L','X');
-//        chars.put('C','X');
-//        chars.put('D','C');
-//        chars.put('M','V');
-//
-//        List<Boolean> wyniki = chars.entrySet().
-//                stream()
-//                .map(entry -> cod(romanChar,entry.getKey(),entry.getValue(),romanNumber,index))
-//                .collect(Collectors.toList());
-//
-//        Boolean aBoolean = wyniki.stream().findFirst(wynik -> wynik == true).get();
-//        return aBoolean;
-//
-//    }
 
-    private boolean cod(char romanChar, char baseChar ,char prevChar, String romanNumber, int index){
-        return romanChar == baseChar
-                && getPrevRomanChar(index, romanNumber) == prevChar
-                && getPrevRomanChar(index - 1, romanNumber) == prevChar;
-    }
 }
 
 

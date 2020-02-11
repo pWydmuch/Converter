@@ -1,4 +1,4 @@
-package com.example.converter.service;
+package com.example.converter.services;
 
 import com.example.converter.exceptions.BadArabicNumberException;
 import com.example.converter.model.ArabicContainer;

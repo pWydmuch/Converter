@@ -1,12 +1,12 @@
-package com.example.converter.controller;
+package com.example.converter.controllers;
 
 
 import com.example.converter.exceptions.BadArabicNumberException;
 import com.example.converter.exceptions.BadRomanNumberException;
 import com.example.converter.model.ArabicContainer;
 import com.example.converter.model.RomanContainer;
-import com.example.converter.service.ConverterToRoman;
-import com.example.converter.service.ConverterToArabic;
+import com.example.converter.services.ConverterToRoman;
+import com.example.converter.services.ConverterToArabic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
