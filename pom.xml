@@ -12,7 +12,11 @@
     <artifactId>converter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Converter</name>
+<<<<<<< HEAD
     <description>Simple converter</description>
+=======
+    <description>Simple Converter</description>
+>>>>>>> 1537ed4b7d7245c17b53eb9aa28a4c8723992d5b
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -57,7 +61,18 @@
 
     <build>
         <plugins>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals><goal>copy-dependencies</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
