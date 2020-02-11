@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -war target/converter-0.0.1-SNAPSHOT.war
+web: ./mvnw spring-boot:run
