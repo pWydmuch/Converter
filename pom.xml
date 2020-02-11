@@ -12,11 +12,7 @@
     <artifactId>converter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Converter</name>
-<<<<<<< HEAD
     <description>Simple converter</description>
-=======
-    <description>Simple Converter</description>
->>>>>>> 1537ed4b7d7245c17b53eb9aa28a4c8723992d5b
     <properties>
         <java.version>1.8</java.version>
     </properties>
