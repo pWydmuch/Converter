@@ -9,7 +9,7 @@ let currentDestination = 'arabic-equiv'
 form.addEventListener('submit', event => {
     event.preventDefault()
     const number = enterInput.value
-    // fetch(`http://localhost:31376/${currentDestination}?number=${number}`)
+    // fetch(`http://localhost:8080/${currentDestination}?number=${number}`)
     fetch(`https://simple-converter.herokuapp.com/${currentDestination}?number=${number}`)
         .then((response) => {
             if (response.ok) fillResult(response.text())

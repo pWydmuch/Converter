@@ -35,14 +35,8 @@ public class ConverterController {
 
     @GetMapping("/roman-equiv")
     public String getConvertedToRoman(@RequestParam("number") String arabicNumberString) throws BadArabicNumberException {
-        try {
-            int arabicNumber = Integer.parseInt(arabicNumberString);
-            return converterToRoman.convert(new ArabicContainer(arabicNumber));
-        }catch(NumberFormatException e){
-            throw new BadArabicNumberException("You can use digits only");
-        }
+        int arabicNumber = Integer.parseInt(arabicNumberString);
+        return converterToRoman.convert(new ArabicContainer(arabicNumber));
     }
-
-
 
 }

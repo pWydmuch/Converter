@@ -12,7 +12,14 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({BadRomanNumberException.class,
     BadArabicNumberException.class})
-    public ResponseEntity<?> handleUserAlreadyExists(Exception e) {
+    public ResponseEntity<?> handleUserBadNumbers(Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<?> handleInvalidCharacters(Exception e) {
+        return new ResponseEntity<>("You can use digits only", HttpStatus.BAD_REQUEST);
+    }
+
+
 }

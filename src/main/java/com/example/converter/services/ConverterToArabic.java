@@ -4,6 +4,9 @@ import com.example.converter.exceptions.BadRomanNumberException;
 import com.example.converter.model.RomanContainer;
 import org.springframework.stereotype.Service;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 @Service
 public class ConverterToArabic {
 
@@ -16,6 +19,7 @@ public class ConverterToArabic {
         return romanContainer.getArabicEquiv();
     }
 
+    //TODO tu można chyba użyć dekoratatora, żeby nie było tyle powtarzanego kodu
     private void countValueOfChar(int index, RomanContainer romanContainer) throws BadRomanNumberException {
 
         char romanChar = romanContainer.getRoman().charAt(index);
@@ -119,24 +123,26 @@ public class ConverterToArabic {
 
     private boolean isCharBetweenTwoTheSameChars(int index, char romanChar, String romanNumber) { // prevents from situations like these IVI, CDC,XCX,
         //TODO redundacja z następną metodą, tam jest getPrev, ale to powinno dać się załatwić Function
-        return  (romanChar == 'V' && getPrevRomanChar(index, romanNumber) == 'I' && getNextRomanChar(index, romanNumber) == 'I') ||
-                (romanChar == 'X' && getPrevRomanChar(index, romanNumber) == 'I' && getNextRomanChar(index, romanNumber) == 'I') ||
-                (romanChar == 'L' && getPrevRomanChar(index, romanNumber) == 'X' && getNextRomanChar(index, romanNumber) == 'X') ||
-                (romanChar == 'C' && getPrevRomanChar(index, romanNumber) == 'X' && getNextRomanChar(index, romanNumber) == 'X') ||
-                (romanChar == 'D' && getPrevRomanChar(index, romanNumber) == 'C' && getNextRomanChar(index, romanNumber) == 'C') ||
-                (romanChar == 'M' && getPrevRomanChar(index, romanNumber) == 'C' && getNextRomanChar(index, romanNumber) == 'C') ||
-                ((romanChar == 'V' || romanChar == 'L' || romanChar == 'D') && romanChar == getNextRomanChar(index + 1, romanNumber)) // isNextCharWrong() prevents possibility of occurring e.g. VV
+        return  checkOtherChars(index,index,romanChar, romanNumber, this::getNextRomanChar) ||
+                ((romanChar == 'V' || romanChar == 'L' || romanChar == 'D') && romanChar == getNextRomanChar(index + 1, romanNumber))
+                // isNextCharWrong() prevents possibility of occurring e.g. VV
 //        // but it doesn't prevent situation such as VIV
                 ;
     }
 
     private boolean isTwoTheSameCharsBeforeChar(int index, char romanChar, String romanNumber) { // checks how many the same numerals are before the cartain numeral, there can't be more than one in a row
-        return  (romanChar == 'V' && getPrevRomanChar(index, romanNumber) == 'I' && getPrevRomanChar(index - 1, romanNumber) == 'I') ||
-                (romanChar == 'X' && getPrevRomanChar(index, romanNumber) == 'I' && getPrevRomanChar(index - 1, romanNumber) == 'I') ||
-                (romanChar == 'L' && getPrevRomanChar(index, romanNumber) == 'X' && getPrevRomanChar(index - 1, romanNumber) == 'X') ||
-                (romanChar == 'C' && getPrevRomanChar(index, romanNumber) == 'X' && getPrevRomanChar(index - 1, romanNumber) == 'X') ||
-                (romanChar == 'D' && getPrevRomanChar(index, romanNumber) == 'C' && getPrevRomanChar(index - 1, romanNumber) == 'C') ||
-                (romanChar == 'M' && getPrevRomanChar(index, romanNumber) == 'C' && getPrevRomanChar(index - 1, romanNumber) == 'C');
+        return  checkOtherChars(index, index-1, romanChar, romanNumber, this::getNextRomanChar);
+
+
+    }
+
+    private boolean checkOtherChars(int index, int index2, char romanChar, String romanNumber, BiFunction<Integer,String,Character> func){
+        return  (romanChar == 'V' && getPrevRomanChar(index, romanNumber) == 'I' && func.apply(index2, romanNumber)  == 'I') ||
+                (romanChar == 'X' && getPrevRomanChar(index, romanNumber) == 'I' && func.apply(index2, romanNumber) == 'I') ||
+                (romanChar == 'L' && getPrevRomanChar(index, romanNumber) == 'X' && func.apply(index2, romanNumber) == 'X') ||
+                (romanChar == 'C' && getPrevRomanChar(index, romanNumber) == 'X' && func.apply(index2, romanNumber) == 'X') ||
+                (romanChar == 'D' && getPrevRomanChar(index, romanNumber) == 'C' && func.apply(index2, romanNumber) == 'C') ||
+                (romanChar == 'M' && getPrevRomanChar(index, romanNumber) == 'C' && func.apply(index2, romanNumber) == 'C');
     }
 
 
