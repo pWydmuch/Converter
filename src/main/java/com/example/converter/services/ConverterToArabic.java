@@ -21,61 +21,60 @@ public class ConverterToArabic {
         char romanChar = romanContainer.getRoman().charAt(index);
         int arabicEquiv = romanContainer.getArabicEquiv();
         String romanNumber = romanContainer.getRoman();
+        switch(romanChar) {
+            case 'I':
+                if (isNextCharWrong(3, index, romanNumber) || isOrderOfCharsWrong(index, 'I', romanNumber)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
+                    throw new BadRomanNumberException("Char \"I\" is used wrong");
+                else if (getNextRomanChar(index, romanNumber) == 'V' || getNextRomanChar(index, romanNumber) == 'X')
+                    romanContainer.setArabicEquiv(arabicEquiv - 1);
+                else
+                    romanContainer.setArabicEquiv(arabicEquiv + 1);
+                break;
+            case 'V' :
 
-        if (romanChar == 'I') {
-            if (isNextCharWrong(3, index, romanNumber) || isOrderOfCharsWrong(index, 'I', romanNumber)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
-                throw new BadRomanNumberException("Char \"I\" is used wrong");
-            else if (getNextRomanChar(index, romanNumber) == 'V' || getNextRomanChar(index, romanNumber) == 'X')
-                romanContainer.setArabicEquiv(arabicEquiv - 1);
-            else
-                romanContainer.setArabicEquiv(arabicEquiv + 1);
+                if (isNextCharWrong(1, index, romanNumber) || isOrderOfCharsWrong(index, 'V', romanNumber)) // there's  need to check isTooManyTheSameConsecutiveChars() because althought there can't be// two or more V there can be for example VIV what's incorrect
+                    throw new BadRomanNumberException("Char \"V\" is used wrong");
+                else
+                    romanContainer.setArabicEquiv(arabicEquiv + 5);
+                break;
+            case 'X' :
 
-        } else if (romanChar == 'V') { // Write else if-s because I need an else block at the end of this method which assigns true to czyBlad
-
-            if (isNextCharWrong(1, index, romanNumber) || isOrderOfCharsWrong(index, 'V', romanNumber)) // there's  need to check isTooManyTheSameConsecutiveChars() because althought there can't be// two or more V there can be for example VIV what's incorrect
-                throw new BadRomanNumberException("Char \"V\" is used wrong");
-            else
-                romanContainer.setArabicEquiv(arabicEquiv + 5);
-
-        } else if (romanChar == 'X') {
-
-            if (isNextCharWrong(5, index, romanNumber) || isOrderOfCharsWrong(index, 'X', romanNumber))
-                throw new BadRomanNumberException("Char \"X\" is used wrong");
-            if (getNextRomanChar(index, romanNumber) == 'L' || getNextRomanChar(index, romanNumber) == 'C')
-                romanContainer.setArabicEquiv(arabicEquiv - 10);
-            else
-                romanContainer.setArabicEquiv(arabicEquiv + 10);
-
-
-        } else if (romanChar == 'L')
-            if (isNextCharWrong(3, index, romanNumber) || isOrderOfCharsWrong(index, 'L', romanNumber))
-                throw new BadRomanNumberException("Char \"L\" is used wrong");
-            else
-                romanContainer.setArabicEquiv(arabicEquiv + 50);
-
-        else if (romanChar == 'C') {
-            if (isOrderOfCharsWrong(index, 'C', romanNumber))      // there's no need for isNextCharWrong() because C can stand before every roman numeral including C and so can M
-                throw new BadRomanNumberException("Char \"C\" is used wrong");
-            if (getNextRomanChar(index, romanNumber) == 'D' || getNextRomanChar(index, romanNumber) == 'M')
-                romanContainer.setArabicEquiv(arabicEquiv - 100);
-            else
-                romanContainer.setArabicEquiv(arabicEquiv + 100);
-
-        } else if (romanChar == 'D')
-            if (isNextCharWrong(5, index, romanNumber) || isOrderOfCharsWrong(index, 'D', romanNumber))
-                throw new BadRomanNumberException("Char \"D\" is used wrong");
-            else
-                romanContainer.setArabicEquiv(arabicEquiv + 500);
-
-        else if (romanChar == 'M') {
-            if (isOrderOfCharsWrong(index, 'M', romanNumber))
-                throw new BadRomanNumberException("Char \"M\" is used wrong");
-            else
-                romanContainer.setArabicEquiv(arabicEquiv + 1000);
-
-        } else
-            throw new BadRomanNumberException("You can use roman digits only ");
-
+                if (isNextCharWrong(5, index, romanNumber) || isOrderOfCharsWrong(index, 'X', romanNumber))
+                    throw new BadRomanNumberException("Char \"X\" is used wrong");
+                if (getNextRomanChar(index, romanNumber) == 'L' || getNextRomanChar(index, romanNumber) == 'C')
+                    romanContainer.setArabicEquiv(arabicEquiv - 10);
+                else
+                    romanContainer.setArabicEquiv(arabicEquiv + 10);
+                break;
+            case 'L' :
+                if (isNextCharWrong(3, index, romanNumber) || isOrderOfCharsWrong(index, 'L', romanNumber))
+                    throw new BadRomanNumberException("Char \"L\" is used wrong");
+                else
+                    romanContainer.setArabicEquiv(arabicEquiv + 50);
+                break;
+            case 'C' :
+                if (isOrderOfCharsWrong(index, 'C', romanNumber))      // there's no need for isNextCharWrong() because C can stand before every roman numeral including C and so can M
+                    throw new BadRomanNumberException("Char \"C\" is used wrong");
+                if (getNextRomanChar(index, romanNumber) == 'D' || getNextRomanChar(index, romanNumber) == 'M')
+                    romanContainer.setArabicEquiv(arabicEquiv - 100);
+                else
+                    romanContainer.setArabicEquiv(arabicEquiv + 100);
+                break;
+            case 'D':
+                if (isNextCharWrong(5, index, romanNumber) || isOrderOfCharsWrong(index, 'D', romanNumber))
+                    throw new BadRomanNumberException("Char \"D\" is used wrong");
+                else
+                    romanContainer.setArabicEquiv(arabicEquiv + 500);
+                break;
+            case 'M' :
+                if (isOrderOfCharsWrong(index, 'M', romanNumber))
+                    throw new BadRomanNumberException("Char \"M\" is used wrong");
+                else
+                    romanContainer.setArabicEquiv(arabicEquiv + 1000);
+                break;
+             default:
+                throw new BadRomanNumberException("You can use roman digits only ");
+        }
     }
 
     private char getPrevRomanChar(int index, String romanNumber) {
