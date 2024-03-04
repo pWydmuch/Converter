@@ -11,7 +11,7 @@ import java.util.function.Function;
 public class ConverterToArabic {
 
 
-    public int convert(RomanContainer romanContainer) throws BadRomanNumberException {
+    public int convert(RomanContainer romanContainer)  {
 
         for (int romanCharNumber = 0; romanCharNumber < romanContainer.getRoman().length(); romanCharNumber++) {
             countValueOfChar(romanCharNumber, romanContainer);
@@ -20,7 +20,7 @@ public class ConverterToArabic {
     }
 
     //TODO tu można chyba użyć dekoratatora, żeby nie było tyle powtarzanego kodu
-    private void countValueOfChar(int index, RomanContainer romanContainer) throws BadRomanNumberException {
+    private void countValueOfChar(int index, RomanContainer romanContainer)  {
 
         char romanChar = romanContainer.getRoman().charAt(index);
         int arabicEquiv = romanContainer.getArabicEquiv();

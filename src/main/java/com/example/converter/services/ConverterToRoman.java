@@ -51,7 +51,7 @@ public class ConverterToRoman {
     }
 
 
-    private void appendMax8(ArabicContainer arabicContainer) throws BadArabicNumberException {
+    private void appendMax8(ArabicContainer arabicContainer)  {
         StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
         int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
         if (arabicNumber == 4) {
@@ -66,7 +66,7 @@ public class ConverterToRoman {
 
     }
 
-    private void appendMax39(ArabicContainer arabicContainer) throws BadArabicNumberException {
+    private void appendMax39(ArabicContainer arabicContainer)  {
         StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
         int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
         if (arabicNumber == 9) {
@@ -80,7 +80,7 @@ public class ConverterToRoman {
         }
     }
 
-    private void appendMax89(ArabicContainer arabicContainer) throws BadArabicNumberException {
+    private void appendMax89(ArabicContainer arabicContainer)  {
         StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
         int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
         if (arabicNumber / 10 == 4) {
@@ -96,7 +96,7 @@ public class ConverterToRoman {
 
     }
 
-    private void appendMax399(ArabicContainer arabicContainer) throws BadArabicNumberException {
+    private void appendMax399(ArabicContainer arabicContainer)  {
         StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
         int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
         if (arabicNumber / 10 == 9) {
@@ -112,7 +112,7 @@ public class ConverterToRoman {
         }
     }
 
-    private void appendMax899(ArabicContainer arabicContainer) throws BadArabicNumberException {
+    private void appendMax899(ArabicContainer arabicContainer)  {
         StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
         int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
         if (arabicNumber / 100 == 4) {
@@ -127,7 +127,7 @@ public class ConverterToRoman {
         }
     }
 
-    private void appendMax3999(ArabicContainer arabicContainer) throws BadArabicNumberException {
+    private void appendMax3999(ArabicContainer arabicContainer)  {
         StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
         int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
         if (arabicNumber / 100 == 9) {
