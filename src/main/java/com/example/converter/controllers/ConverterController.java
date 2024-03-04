@@ -1,9 +1,7 @@
 package com.example.converter.controllers;
 
 
-import com.example.converter.exceptions.BadArabicNumberException;
 import com.example.converter.exceptions.BadRomanNumberException;
-import com.example.converter.model.ArabicContainer;
 import com.example.converter.model.RomanContainer;
 import com.example.converter.services.ConverterToRoman;
 import com.example.converter.services.ConverterToArabic;
@@ -27,16 +25,16 @@ public class ConverterController {
     }
 
     @GetMapping("/arabic-equiv")
-    public String getConvertedToArab(@RequestParam("number") String romanNumber) throws BadRomanNumberException {
+    public String getConvertedToArab(@RequestParam("number") String romanNumber) {
         romanNumber = romanNumber.toUpperCase();
         int arabicEquiv = converterToArabic.convert(new RomanContainer(romanNumber));
         return String.valueOf(arabicEquiv);
     }
 
     @GetMapping("/roman-equiv")
-    public String getConvertedToRoman(@RequestParam("number") String arabicNumberString) throws BadArabicNumberException {
+    public String getConvertedToRoman(@RequestParam("number") String arabicNumberString) {
         int arabicNumber = Integer.parseInt(arabicNumberString);
-        return converterToRoman.convert(new ArabicContainer(arabicNumber));
+        return converterToRoman.convert(arabicNumber);
     }
 
 }

@@ -1,147 +1,86 @@
 package com.example.converter.services;
 
-import com.example.converter.exceptions.BadArabicNumberException;
-import com.example.converter.model.ArabicContainer;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class ConverterToRoman {
 
-
-    public String convert(ArabicContainer arabicContainer) throws BadArabicNumberException {
-
-        if (arabicContainer.getArabicNumber() == 0)
-            throw new BadArabicNumberException("The number can't be 0");
-
-        countRomanValue(arabicContainer);
-        return arabicContainer.getRomanEquiv().toString();
+    public String convert(int arabicNumber) {
+        if (arabicNumber <= 0)
+            throw new BadArabicNumberException("The number must be greater than 0");
+        return countRomanValue(arabicNumber);
     }
 
-
-    private void countRomanValue(ArabicContainer arabicContainer) throws BadArabicNumberException {
-
-        int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
-
-        if (arabicNumber > 0 && arabicNumber <= 3)
-            appendMax3(arabicContainer);
-        else if (arabicNumber > 3 && arabicNumber <= 8)
-            appendMax8( arabicContainer);
-        else if (arabicNumber > 8 && arabicNumber <= 39)
-            appendMax39( arabicContainer);
-        else if (arabicNumber > 39 && arabicNumber <= 89)
-            appendMax89(arabicContainer);
-        else if (arabicNumber > 89 && arabicNumber <= 399)
-            appendMax399(arabicContainer);
-        else if (arabicNumber > 399 && arabicNumber <= 899)
-            appendMax899( arabicContainer);
-        else if (arabicNumber > 899 && arabicNumber <= 3999)
-            appendMax3999(arabicContainer);
-        if (arabicNumber < 0 || arabicNumber >= 4000) {
-            throw new BadArabicNumberException("The number must be between 1 and 3999");
-        }
-
+    private String countRomanValue(Integer arabicNumber) {
+        return switch (arabicNumber) {
+            case 0 -> "";
+            case Integer i when i > 0 && i <= 3 -> appendMax3(arabicNumber);
+            case Integer i when i > 3 && i <= 8 -> appendMax8(arabicNumber);
+            case Integer i when i > 8 && i <= 39 -> appendMax39(arabicNumber);
+            case Integer i when i > 39 && i <= 89 -> appendMax89(arabicNumber);
+            case Integer i when i > 89 && i <= 399 -> appendMax399(arabicNumber);
+            case Integer i when i > 399 && i <= 899 -> appendMax899(arabicNumber);
+            case Integer i when i > 899 && i <= 3999 -> appendMax3999(arabicNumber);
+            default -> throw new IllegalStateException("Unexpected value: " + arabicNumber);
+        };
     }
 
-    private void appendMax3(ArabicContainer arabicContainer) {
-        StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
-        int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
-        for (int i = 0; i < arabicNumber; i++)
-            romanEquiv.append('I');
+    private String appendMax3(Integer arabicNumber) {
+        return "I".repeat(arabicNumber);
     }
 
-
-    private void appendMax8(ArabicContainer arabicContainer)  {
-        StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
-        int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
+    private String appendMax8(Integer arabicNumber) {
         if (arabicNumber == 4) {
-            romanEquiv.append('I');
-            romanEquiv.append('V');
+            return "IV";
+        } else {
+            return 'V' + countRomanValue(arabicNumber - 5);
         }
-        if (arabicNumber >= 5) {
-            romanEquiv.append('V');
-            arabicContainer.setCurrentArabicNumberValue(arabicNumber - 5);
-            countRomanValue(arabicContainer);
-        }
-
     }
 
-    private void appendMax39(ArabicContainer arabicContainer)  {
-        StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
-        int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
+    private String appendMax39(Integer arabicNumber) {
         if (arabicNumber == 9) {
-            romanEquiv.append('I');
-            romanEquiv.append('X');
+            return "IX";
         } else {
-            for (int i = 0; i < arabicNumber / 10; i++)
-                romanEquiv.append('X');
-            arabicContainer.setCurrentArabicNumberValue(arabicNumber - arabicNumber / 10 * 10);
-            countRomanValue(arabicContainer);
+            return "X".repeat(arabicNumber / 10) + countRomanValue(arabicNumber - arabicNumber / 10 * 10);
         }
     }
 
-    private void appendMax89(ArabicContainer arabicContainer)  {
-        StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
-        int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
+    private String appendMax89(Integer arabicNumber) {
         if (arabicNumber / 10 == 4) {
-            romanEquiv.append('X');
-            romanEquiv.append('L');
-            arabicContainer.setCurrentArabicNumberValue(arabicNumber - 40);
-            countRomanValue(arabicContainer);
+            return "XL" + countRomanValue(arabicNumber - 40);
         } else {
-            romanEquiv.append('L');
-            arabicContainer.setCurrentArabicNumberValue(arabicNumber - 50);
-            countRomanValue(arabicContainer);
+            return "L" + countRomanValue(arabicNumber - 50);
         }
-
     }
 
-    private void appendMax399(ArabicContainer arabicContainer)  {
-        StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
-        int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
+    private String appendMax399(Integer arabicNumber) {
         if (arabicNumber / 10 == 9) {
-            romanEquiv.append('X');
-            romanEquiv.append('C');
-            arabicContainer.setCurrentArabicNumberValue(arabicNumber - 90);
-            countRomanValue(arabicContainer);
+            return "XC" + countRomanValue(arabicNumber - 90);
         } else {
-            for (int i = 0; i < arabicNumber / 100; i++)
-                romanEquiv.append('C');
-            arabicContainer.setCurrentArabicNumberValue(arabicNumber - arabicNumber / 100 * 100);
-            countRomanValue(arabicContainer);
+            return "C".repeat(arabicNumber / 100) + countRomanValue(arabicNumber - arabicNumber / 100 * 100);
         }
     }
 
-    private void appendMax899(ArabicContainer arabicContainer)  {
-        StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
-        int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
+    private String appendMax899(Integer arabicNumber) {
         if (arabicNumber / 100 == 4) {
-            romanEquiv.append('C');
-            romanEquiv.append('D');
-            arabicContainer.setCurrentArabicNumberValue(arabicNumber - 400);
-            countRomanValue(arabicContainer);
+            return "CD" + countRomanValue(arabicNumber - 400);
         } else {
-            romanEquiv.append('D');
-            arabicContainer.setCurrentArabicNumberValue(arabicNumber - 500);
-            countRomanValue(arabicContainer);
+            return "D" + countRomanValue(arabicNumber - 500);
         }
     }
 
-    private void appendMax3999(ArabicContainer arabicContainer)  {
-        StringBuilder romanEquiv = arabicContainer.getRomanEquiv();
-        int arabicNumber = arabicContainer.getCurrentArabicNumberValue();
+    private String appendMax3999(Integer arabicNumber) {
         if (arabicNumber / 100 == 9) {
-            romanEquiv.append('C');
-            romanEquiv.append('M');
-            arabicContainer.setCurrentArabicNumberValue(arabicNumber - 900);
-            countRomanValue(arabicContainer);
+            return "CM" + countRomanValue(arabicNumber - 900);
         } else {
-            for (int i = 0; i < arabicNumber / 1000; i++)
-                romanEquiv.append('M');
-            arabicContainer.setCurrentArabicNumberValue(arabicNumber - arabicNumber / 1000 * 1000);
-            countRomanValue(arabicContainer);
+            return "M".repeat(arabicNumber / 1000) + countRomanValue(arabicNumber - arabicNumber / 1000 * 1000);
         }
     }
 
+    static public class BadArabicNumberException extends RuntimeException {
 
+        public BadArabicNumberException(String message) {
+            super(message);
+        }
+    }
 }
