@@ -3,23 +3,21 @@ package com.example.converter.roman_arabic_converter;
 import org.springframework.stereotype.Service;
 
 import java.util.function.BiFunction;
+import java.util.stream.IntStream;
 
 @Service
 public class ConverterToArabic {
 
     public int convert(String romanNumber) {
-        romanNumber = romanNumber.toUpperCase();
-        int arabic = 0;
-        for (int romanCharNumber = 0; romanCharNumber < romanNumber.length(); romanCharNumber++) {
-            arabic += countValueOfChar(romanCharNumber, romanNumber);
-        }
-        return arabic;
+        String romanNumberUpperCase = romanNumber.toUpperCase();
+        return IntStream.range(0, romanNumber.length())
+                .map(i -> countValueOfChar(i, romanNumberUpperCase))
+                .sum();
     }
 
-    //TODO tu można chyba użyć dekoratatora, żeby nie było tyle powtarzanego kodu
     private int countValueOfChar(int index, String romanNumber) {
-        char romanChar = romanNumber.charAt(index);
-        return switch (romanChar) {
+        char romanDigit = romanNumber.charAt(index);
+        return switch (romanDigit) {
             case 'I' -> countI(index, romanNumber);
             case 'V' -> countV(index, romanNumber);
             case 'X' -> countX(index, romanNumber);
@@ -75,18 +73,6 @@ public class ConverterToArabic {
         return 1000;
     }
 
-    private void check(int index, String romanNumber, char romanChar, int numberOfFirst) {
-        if (isNextCharIncorrect(numberOfFirst, index, romanNumber) || isOrderOfCharsWrong(index, romanChar, romanNumber)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
-            throw new BadRomanNumberException("Char \"" + romanChar + "\" is used incorrectly");
-    }
-
-    private char getNextRomanChar(int index, String romanNumber) {
-        if ((index + 1) < romanNumber.length())
-            return romanNumber.charAt(index + 1);
-        else
-            return '0';
-    }
-
     private boolean isNextCharIncorrect(int numberOfFirstCharToCheck, int index, String romanNumber) {
         char[] romanChars = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
         for (int i = numberOfFirstCharToCheck; i < romanChars.length; i++) {
@@ -129,6 +115,18 @@ public class ConverterToArabic {
                 (romanChar == 'C' && getPrevRomanChar(index, romanNumber) == 'X' && func.apply(index2, romanNumber) == 'X') ||
                 (romanChar == 'D' && getPrevRomanChar(index, romanNumber) == 'C' && func.apply(index2, romanNumber) == 'C') ||
                 (romanChar == 'M' && getPrevRomanChar(index, romanNumber) == 'C' && func.apply(index2, romanNumber) == 'C');
+    }
+
+    private void check(int index, String romanNumber, char romanChar, int numberOfFirst) {
+        if (isNextCharIncorrect(numberOfFirst, index, romanNumber) || isOrderOfCharsWrong(index, romanChar, romanNumber)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
+            throw new BadRomanNumberException("Char \"" + romanChar + "\" is used incorrectly");
+    }
+
+    private char getNextRomanChar(int index, String romanNumber) {
+        if ((index + 1) < romanNumber.length())
+            return romanNumber.charAt(index + 1);
+        else
+            return '0';
     }
 
     private char getPrevRomanChar(int index, String romanNumber) {
