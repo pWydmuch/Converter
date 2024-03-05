@@ -3,6 +3,7 @@ package com.example.converter.roman_arabic_converter;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 @Service
@@ -85,7 +86,7 @@ public class ConverterToArabic {
             return false;
         }
 
-        private boolean isOrderOfCharsWrong(char romanChar) {
+        private boolean isOrderOfCharsIncorrect(char romanChar) {
             return isTooManyTheSameConsecutiveChars(romanChar) ||
                     isTwoTheSameCharsBeforeChar(romanChar) ||
                     isCharBetweenTwoTheSameChars(romanChar);
@@ -109,13 +110,13 @@ public class ConverterToArabic {
             return checkIfSurroundingsCorrect(romanChar, this::isTwoSameBefore);
         }
 
-        private boolean checkIfSurroundingsCorrect(char romanChar, Function<Character, Boolean> test) {
-            return romanChar == 'V' && test.apply('I') ||
-                    romanChar == 'X' && test.apply('I') ||
-                    romanChar == 'L' && test.apply('X') ||
-                    romanChar == 'C' && test.apply('X') ||
-                    romanChar == 'D' && test.apply('C') ||
-                    romanChar == 'M' && test.apply('C');
+        private boolean checkIfSurroundingsCorrect(char romanChar, Predicate<Character> checker) {
+            return romanChar == 'V' && checker.test('I') ||
+                    romanChar == 'X' && checker.test('I') ||
+                    romanChar == 'L' && checker.test('X') ||
+                    romanChar == 'C' && checker.test('X') ||
+                    romanChar == 'D' && checker.test('C') ||
+                    romanChar == 'M' && checker.test('C');
         }
 
         private boolean isTwoSameBefore(char romanChar) {
@@ -127,7 +128,7 @@ public class ConverterToArabic {
         }
 
         private void check(char romanChar, int numberOfFirst) {
-            if (isNextCharIncorrect(numberOfFirst) || isOrderOfCharsWrong(romanChar)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
+            if (isNextCharIncorrect(numberOfFirst) || isOrderOfCharsIncorrect(romanChar)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
                 throw new BadRomanNumberException("Char \"" + romanChar + "\" is used incorrectly");
         }
 
