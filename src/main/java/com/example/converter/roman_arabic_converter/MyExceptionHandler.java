@@ -1,7 +1,6 @@
-package com.example.converter.exceptions;
+package com.example.converter.roman_arabic_converter;
 
 
-import com.example.converter.services.ConverterToRoman;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,7 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({BadRomanNumberException.class,
+    @ExceptionHandler({ConverterToArabic.BadRomanNumberException.class,
     ConverterToRoman.BadArabicNumberException.class})
     public ResponseEntity<?> handleUserBadNumbers(Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -21,6 +20,4 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleInvalidCharacters(Exception e) {
         return new ResponseEntity<>("You can use digits only", HttpStatus.BAD_REQUEST);
     }
-
-
 }

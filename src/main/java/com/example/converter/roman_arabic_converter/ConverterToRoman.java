@@ -1,4 +1,4 @@
-package com.example.converter.services;
+package com.example.converter.roman_arabic_converter;
 
 import org.springframework.stereotype.Service;
 
@@ -77,8 +77,7 @@ public class ConverterToRoman {
         }
     }
 
-    static public class BadArabicNumberException extends RuntimeException {
-
+    static class BadArabicNumberException extends RuntimeException {
         public BadArabicNumberException(String message) {
             super(message);
         }
