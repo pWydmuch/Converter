@@ -2,6 +2,7 @@ package com.example.converter.roman_arabic_converter;
 
 import org.springframework.stereotype.Service;
 
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 @Service
@@ -91,32 +92,38 @@ public class ConverterToArabic {
         }
 
         private boolean isTooManyTheSameConsecutiveChars(char romanChar) {
-            return ((romanChar == 'I' || romanChar == 'X' || romanChar == 'C' || romanChar == 'M')
+            return (romanChar == 'I' || romanChar == 'X' || romanChar == 'C' || romanChar == 'M')
                     && romanChar == getNextRomanChar()
                     && romanChar == getNextRomanChar(currentCharIndex + 1)
-                    && romanChar == getNextRomanChar(currentCharIndex + 2));// if 4 consecutive numerals are the same
+                    && romanChar == getNextRomanChar(currentCharIndex + 2);// if 4 consecutive numerals are the same
         }
 
         private boolean isCharBetweenTwoTheSameChars(char romanChar) { // prevents from situations like these IVI, CDC,XCX,
-            //TODO redundacja z następną metodą, tam jest getPrev, ale to powinno dać się załatwić Function
-            return checkOtherChars(currentCharIndex, romanChar) ||
-                    ((romanChar == 'V' || romanChar == 'L' || romanChar == 'D') && romanChar == getNextRomanChar(currentCharIndex + 1))
-                    // isNextCharWrong() prevents possibility of occurring e.g. VV
-                    //        // but it doesn't prevent situation such as VIV
-                    ;
+            return checkIfSurroundingsCorrect(romanChar, this::isSameCharOnBothSides) ||
+                    (romanChar == 'V' || romanChar == 'L' || romanChar == 'D') && romanChar == getNextRomanChar(currentCharIndex + 1);
+            // isNextCharWrong() prevents possibility of occurring e.g. VV
+            //        // but it doesn't prevent situation such as VIV
         }
 
         private boolean isTwoTheSameCharsBeforeChar(char romanChar) { // checks how many the same numerals are before the certain numeral, there can't be more than one in a row
-            return checkOtherChars(currentCharIndex - 1, romanChar);
+            return checkIfSurroundingsCorrect(romanChar, this::isTwoSameBefore);
         }
 
-        private boolean checkOtherChars(int index2, char romanChar) {
-            return (romanChar == 'V' && getPrevRomanChar() == 'I' && getNextRomanChar(index2) == 'I') ||
-                    (romanChar == 'X' && getPrevRomanChar() == 'I' && getNextRomanChar(index2) == 'I') ||
-                    (romanChar == 'L' && getPrevRomanChar() == 'X' && getNextRomanChar(index2) == 'X') ||
-                    (romanChar == 'C' && getPrevRomanChar() == 'X' && getNextRomanChar(index2) == 'X') ||
-                    (romanChar == 'D' && getPrevRomanChar() == 'C' && getNextRomanChar(index2) == 'C') ||
-                    (romanChar == 'M' && getPrevRomanChar() == 'C' && getNextRomanChar(index2) == 'C');
+        private boolean checkIfSurroundingsCorrect(char romanChar, Function<Character, Boolean> test) {
+            return romanChar == 'V' && test.apply('I') ||
+                    romanChar == 'X' && test.apply('I') ||
+                    romanChar == 'L' && test.apply('X') ||
+                    romanChar == 'C' && test.apply('X') ||
+                    romanChar == 'D' && test.apply('C') ||
+                    romanChar == 'M' && test.apply('C');
+        }
+
+        private boolean isTwoSameBefore(char romanChar) {
+            return getPrevRomanChar(currentCharIndex - 1) == romanChar && getPrevRomanChar() == romanChar;
+        }
+
+        private boolean isSameCharOnBothSides(char romanChar) {
+            return getPrevRomanChar() == romanChar && getNextRomanChar() == romanChar;
         }
 
         private void check(char romanChar, int numberOfFirst) {
@@ -141,6 +148,13 @@ public class ConverterToArabic {
         private char getPrevRomanChar() {
             if ((currentCharIndex - 1) >= 0)
                 return romanNumber.charAt(currentCharIndex - 1);
+            else
+                return '0'; //any char different from roman digits, it won't be considered anyway
+        }
+
+        private char getPrevRomanChar(int index) {
+            if ((index - 1) >= 0)
+                return romanNumber.charAt(index - 1);
             else
                 return '0'; //any char different from roman digits, it won't be considered anyway
         }
