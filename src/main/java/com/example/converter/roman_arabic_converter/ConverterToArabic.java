@@ -2,7 +2,7 @@ package com.example.converter.roman_arabic_converter;
 
 import org.springframework.stereotype.Service;
 
-import java.util.function.Function;
+import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -19,6 +19,8 @@ public class ConverterToArabic {
 
     private record ConverterHelper(String romanNumber, int currentCharIndex) {
 
+        private static final Character[] ROMAN_DIGITS = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
+
         private int countValueOfChar() {
             char romanDigit = romanNumber.charAt(currentCharIndex);
             return switch (romanDigit) {
@@ -34,7 +36,7 @@ public class ConverterToArabic {
         }
 
         private int countI() {
-            check('I', 3);
+            checkIfCorrect('I', 'L');
             if (getNextRomanChar() == 'V' || getNextRomanChar() == 'X')
                 return -1;
             else
@@ -42,12 +44,12 @@ public class ConverterToArabic {
         }
 
         private int countV() {
-            check('V', 1);
+            checkIfCorrect('V', 'V');
             return 5;
         }
 
         private int countX() {
-            check('X', 5);
+            checkIfCorrect('X', 'D');
             if (getNextRomanChar() == 'L' || getNextRomanChar() == 'C')
                 return -10;
             else
@@ -55,12 +57,12 @@ public class ConverterToArabic {
         }
 
         private int countL() {
-            check('X', 3);
+            checkIfCorrect('L','L');
             return 50;
         }
 
         private int countC() {
-            check('C', 6);
+            checkIfCorrect('C');
             if (getNextRomanChar() == 'D' || getNextRomanChar() == 'M')
                 return -100;
             else
@@ -68,22 +70,29 @@ public class ConverterToArabic {
         }
 
         private int countD() {
-            check('D', 5);
+            checkIfCorrect('D', 'D');
             return 500;
         }
 
         private int countM() {
-            check('M', 6);
+            checkIfCorrect('M');
             return 1000;
         }
 
-        private boolean isNextCharIncorrect(int numberOfFirstCharToCheck) {
-            char[] romanChars = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
-            for (int i = numberOfFirstCharToCheck; i < romanChars.length; i++) {
-                if (getNextRomanChar(currentCharIndex) == romanChars[i])
-                    return true;
-            }
-            return false;
+        private void checkIfCorrect(char romanChar, char lowestNextInvalid) {
+            if (isNextCharIncorrect(lowestNextInvalid) || isOrderOfCharsIncorrect(romanChar)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
+                throw new BadRomanNumberException("Char \"" + romanChar + "\" is used incorrectly");
+        }
+
+        private void checkIfCorrect(char romanChar) {
+            if (isOrderOfCharsIncorrect(romanChar)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
+                throw new BadRomanNumberException("Char \"" + romanChar + "\" is used incorrectly");
+        }
+
+        private boolean isNextCharIncorrect(char lowestNextInvalid) {
+            return Arrays.stream(ROMAN_DIGITS)
+                    .dropWhile(e -> !e.equals(lowestNextInvalid))
+                    .anyMatch(e -> getNextRomanChar(currentCharIndex) == e);
         }
 
         private boolean isOrderOfCharsIncorrect(char romanChar) {
@@ -127,10 +136,6 @@ public class ConverterToArabic {
             return getPrevRomanChar() == romanChar && getNextRomanChar() == romanChar;
         }
 
-        private void check(char romanChar, int numberOfFirst) {
-            if (isNextCharIncorrect(numberOfFirst) || isOrderOfCharsIncorrect(romanChar)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
-                throw new BadRomanNumberException("Char \"" + romanChar + "\" is used incorrectly");
-        }
 
         private char getNextRomanChar(int index) {
             if ((index + 1) < romanNumber.length())
