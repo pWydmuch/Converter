@@ -10,19 +10,19 @@ import java.util.stream.IntStream;
 public class ConverterToArabic {
 
     public int convert(String romanNumber) {
-        String romanNumberUpperCase = romanNumber.toUpperCase();
+        var romanNumberUpperCase = romanNumber.toUpperCase();
         return IntStream.range(0, romanNumber.length())
-                .mapToObj(i -> new ConverterHelper(romanNumberUpperCase, i))
-                .mapToInt(ConverterHelper::countValueOfChar)
+                .mapToObj(i -> new DigitValueResolver(romanNumberUpperCase, i))
+                .mapToInt(DigitValueResolver::countValueOfChar)
                 .sum();
     }
 
-    private record ConverterHelper(String romanNumber, int currentCharIndex) {
+    private record DigitValueResolver(String romanNumber, int currentDigitIndex) {
 
         private static final Character[] ROMAN_DIGITS = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 
         private int countValueOfChar() {
-            char romanDigit = romanNumber.charAt(currentCharIndex);
+            var romanDigit = romanNumber.charAt(currentDigitIndex);
             return switch (romanDigit) {
                 case 'I' -> countI();
                 case 'V' -> countV();
@@ -37,7 +37,7 @@ public class ConverterToArabic {
 
         private int countI() {
             checkIfCorrect('I', 'L');
-            if (getNextRomanChar() == 'V' || getNextRomanChar() == 'X')
+            if (getNextRomanDigit() == 'V' || getNextRomanDigit() == 'X')
                 return -1;
             else
                 return 1;
@@ -50,20 +50,20 @@ public class ConverterToArabic {
 
         private int countX() {
             checkIfCorrect('X', 'D');
-            if (getNextRomanChar() == 'L' || getNextRomanChar() == 'C')
+            if (getNextRomanDigit() == 'L' || getNextRomanDigit() == 'C')
                 return -10;
             else
                 return 10;
         }
 
         private int countL() {
-            checkIfCorrect('L','L');
+            checkIfCorrect('L', 'L');
             return 50;
         }
 
         private int countC() {
             checkIfCorrect('C');
-            if (getNextRomanChar() == 'D' || getNextRomanChar() == 'M')
+            if (getNextRomanDigit() == 'D' || getNextRomanDigit() == 'M')
                 return -100;
             else
                 return 100;
@@ -79,86 +79,85 @@ public class ConverterToArabic {
             return 1000;
         }
 
-        private void checkIfCorrect(char romanChar, char lowestNextInvalid) {
-            if (isNextCharIncorrect(lowestNextInvalid) || isOrderOfCharsIncorrect(romanChar)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
-                throw new BadRomanNumberException("Char \"" + romanChar + "\" is used incorrectly");
+        private void checkIfCorrect(char romanDigit, char lowestNextInvalid) {
+            if (isNextDigitIncorrect(lowestNextInvalid) || isOrderOfDigitsIncorrect(romanDigit)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
+                throw new BadRomanNumberException("Char \"" + romanDigit + "\" is used incorrectly");
         }
 
-        private void checkIfCorrect(char romanChar) {
-            if (isOrderOfCharsIncorrect(romanChar)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
-                throw new BadRomanNumberException("Char \"" + romanChar + "\" is used incorrectly");
+        private void checkIfCorrect(char romanDigit) {
+            if (isOrderOfDigitsIncorrect(romanDigit)) // isNextCharWrong() checks in front of which roman numerals this numeral mustn't stand// 3 and 6 in arguments field are equivalents of L and M
+                throw new BadRomanNumberException("Char \"" + romanDigit + "\" is used incorrectly");
         }
 
-        private boolean isNextCharIncorrect(char lowestNextInvalid) {
+        private boolean isNextDigitIncorrect(char lowestNextInvalid) {
             return Arrays.stream(ROMAN_DIGITS)
-                    .dropWhile(e -> !e.equals(lowestNextInvalid))
-                    .anyMatch(e -> getNextRomanChar(currentCharIndex) == e);
+                    .dropWhile(digit -> !digit.equals(lowestNextInvalid))
+                    .anyMatch(digit -> getNextRomanDigit() == digit);
         }
 
-        private boolean isOrderOfCharsIncorrect(char romanChar) {
-            return isTooManyTheSameConsecutiveChars(romanChar) ||
-                    isTwoTheSameCharsBeforeChar(romanChar) ||
-                    isCharBetweenTwoTheSameChars(romanChar);
+        private boolean isOrderOfDigitsIncorrect(char romanDigit) {
+            return isTooManyTheSameConsecutiveDigits(romanDigit) ||
+                    isTwoTheSameDigitsBeforeDigit(romanDigit) ||
+                    isDigitBetweenTwoTheSameDigits(romanDigit);
         }
 
-        private boolean isTooManyTheSameConsecutiveChars(char romanChar) {
-            return (romanChar == 'I' || romanChar == 'X' || romanChar == 'C' || romanChar == 'M')
-                    && romanChar == getNextRomanChar()
-                    && romanChar == getNextRomanChar(currentCharIndex + 1)
-                    && romanChar == getNextRomanChar(currentCharIndex + 2);// if 4 consecutive numerals are the same
+        private boolean isTooManyTheSameConsecutiveDigits(char romanDigit) {
+            return (romanDigit == 'I' || romanDigit == 'X' || romanDigit == 'C' || romanDigit == 'M')
+                    && romanDigit == getNextRomanDigit()
+                    && romanDigit == getNextRomanDigit(currentDigitIndex + 1)
+                    && romanDigit == getNextRomanDigit(currentDigitIndex + 2);// if 4 consecutive numerals are the same
         }
 
-        private boolean isCharBetweenTwoTheSameChars(char romanChar) { // prevents from situations like these IVI, CDC,XCX,
-            return checkIfSurroundingsCorrect(romanChar, this::isSameCharOnBothSides) ||
-                    (romanChar == 'V' || romanChar == 'L' || romanChar == 'D') && romanChar == getNextRomanChar(currentCharIndex + 1);
+        private boolean isDigitBetweenTwoTheSameDigits(char romanDigit) { // prevents from situations like these IVI, CDC,XCX,
+            return checkIfSurroundingsCorrect(romanDigit, this::isSameDigitOnBothSides) ||
+                    (romanDigit == 'V' || romanDigit == 'L' || romanDigit == 'D') && romanDigit == getNextRomanDigit(currentDigitIndex + 1);
             // isNextCharWrong() prevents possibility of occurring e.g. VV
             //        // but it doesn't prevent situation such as VIV
         }
 
-        private boolean isTwoTheSameCharsBeforeChar(char romanChar) { // checks how many the same numerals are before the certain numeral, there can't be more than one in a row
-            return checkIfSurroundingsCorrect(romanChar, this::isTwoSameBefore);
+        private boolean isTwoTheSameDigitsBeforeDigit(char romanDigit) { // checks how many the same numerals are before the certain numeral, there can't be more than one in a row
+            return checkIfSurroundingsCorrect(romanDigit, this::isTwoSameBefore);
         }
 
-        private boolean checkIfSurroundingsCorrect(char romanChar, Predicate<Character> checker) {
-            return romanChar == 'V' && checker.test('I') ||
-                    romanChar == 'X' && checker.test('I') ||
-                    romanChar == 'L' && checker.test('X') ||
-                    romanChar == 'C' && checker.test('X') ||
-                    romanChar == 'D' && checker.test('C') ||
-                    romanChar == 'M' && checker.test('C');
+        private boolean checkIfSurroundingsCorrect(char romanDigit, Predicate<Character> checker) {
+            return romanDigit == 'V' && checker.test('I') ||
+                    romanDigit == 'X' && checker.test('I') ||
+                    romanDigit == 'L' && checker.test('X') ||
+                    romanDigit == 'C' && checker.test('X') ||
+                    romanDigit == 'D' && checker.test('C') ||
+                    romanDigit == 'M' && checker.test('C');
         }
 
-        private boolean isTwoSameBefore(char romanChar) {
-            return getPrevRomanChar(currentCharIndex - 1) == romanChar && getPrevRomanChar() == romanChar;
+        private boolean isTwoSameBefore(char romanDigit) {
+            return getPrevRomanDigit(currentDigitIndex - 1) == romanDigit && getPrevRomanDigit() == romanDigit;
         }
 
-        private boolean isSameCharOnBothSides(char romanChar) {
-            return getPrevRomanChar() == romanChar && getNextRomanChar() == romanChar;
+        private boolean isSameDigitOnBothSides(char romanDigit) {
+            return getPrevRomanDigit() == romanDigit && getNextRomanDigit() == romanDigit;
         }
 
-
-        private char getNextRomanChar(int index) {
+        private char getNextRomanDigit(int index) {
             if ((index + 1) < romanNumber.length())
                 return romanNumber.charAt(index + 1);
             else
                 return '0';
         }
 
-        private char getNextRomanChar() {
-            if ((currentCharIndex + 1) < romanNumber.length())
-                return romanNumber.charAt(currentCharIndex + 1);
+        private char getNextRomanDigit() {
+            if ((currentDigitIndex + 1) < romanNumber.length())
+                return romanNumber.charAt(currentDigitIndex + 1);
             else
                 return '0';
         }
 
-        private char getPrevRomanChar() {
-            if ((currentCharIndex - 1) >= 0)
-                return romanNumber.charAt(currentCharIndex - 1);
+        private char getPrevRomanDigit() {
+            if ((currentDigitIndex - 1) >= 0)
+                return romanNumber.charAt(currentDigitIndex - 1);
             else
                 return '0'; //any char different from roman digits, it won't be considered anyway
         }
 
-        private char getPrevRomanChar(int index) {
+        private char getPrevRomanDigit(int index) {
             if ((index - 1) >= 0)
                 return romanNumber.charAt(index - 1);
             else
