@@ -21,7 +21,7 @@ public class ConverterToRoman {
             case Integer i when i > 89 && i <= 399 -> appendMax399(arabicNumber);
             case Integer i when i > 399 && i <= 899 -> appendMax899(arabicNumber);
             case Integer i when i > 899 && i <= 3999 -> appendMax3999(arabicNumber);
-            default -> throw new IllegalStateException("Unexpected value: " + arabicNumber);
+            default -> throw new BadArabicNumberException("Unexpected value: " + arabicNumber);
         };
     }
 

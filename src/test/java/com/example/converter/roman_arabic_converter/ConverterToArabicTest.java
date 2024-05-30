@@ -14,12 +14,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class ConverterToArabicTest {
 
-    private static ConverterToArabic converter;
-
-    @BeforeAll
-    static void setUp() {
-        converter = new ConverterToArabic();
-    }
+    private static final ConverterToArabic converter = new ConverterToArabic();
 
     @ParameterizedTest
     @MethodSource("dataProvider")
