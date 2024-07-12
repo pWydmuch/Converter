@@ -12,8 +12,7 @@ public class ConverterToArabic {
     public int convert(String romanNumber) {
         var romanNumberUpperCase = romanNumber.toUpperCase();
         return IntStream.range(0, romanNumber.length())
-                .mapToObj(i -> new DigitValueResolver(romanNumberUpperCase, i))
-                .mapToInt(DigitValueResolver::countValueOfChar)
+                .map(i -> new DigitValueResolver(romanNumberUpperCase, i).countValueOfChar())
                 .sum();
     }
 
@@ -21,7 +20,7 @@ public class ConverterToArabic {
 
         private static final Character[] ROMAN_DIGITS = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 
-        private int countValueOfChar() {
+        int countValueOfChar() {
             var romanDigit = romanNumber.charAt(currentDigitIndex);
             return switch (romanDigit) {
                 case 'I' -> countI();
