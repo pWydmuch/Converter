@@ -1,4 +1,4 @@
-package com.example.converter.roman_arabic_converter;
+package com.example.converter;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

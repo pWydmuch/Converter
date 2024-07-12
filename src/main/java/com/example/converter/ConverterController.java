@@ -1,4 +1,4 @@
-package com.example.converter.roman_arabic_converter;
+package com.example.converter;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConverterController {
 
-    final
-    private ConverterToRoman converterToRoman;
-    final
-    private ConverterToArabic converterToArabic;
+    final private ConverterToRoman converterToRoman;
+    final private ConverterToArabic converterToArabic;
 
     public ConverterController(ConverterToRoman converterToRoman, ConverterToArabic converterToArabic) {
         this.converterToRoman = converterToRoman;
