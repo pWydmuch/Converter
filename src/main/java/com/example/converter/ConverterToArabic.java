@@ -20,7 +20,7 @@ public class ConverterToArabic {
 
         private static final Character[] ROMAN_DIGITS = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 
-        int countValueOfChar() {
+        private int countValueOfChar() {
             var romanDigit = romanNumber.charAt(currentDigitIndex);
             return switch (romanDigit) {
                 case 'I' -> countI();
