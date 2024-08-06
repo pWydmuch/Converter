@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 public class ConverterToRoman {
 
     public String convert(int arabicNumber) {
-        if (arabicNumber <= 0)
-            throw new BadArabicNumberException("The number must be greater than 0");
+        if (arabicNumber <= 0) throw new BadArabicNumberException("The number must be greater than 0");
+        if (arabicNumber >= 4000) throw new BadArabicNumberException("The number must be smaller than 4000");
         return countRomanValue(arabicNumber);
     }
 

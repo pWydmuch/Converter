@@ -9,8 +9,7 @@ let currentTarget = 'arabic-equiv'
 form.addEventListener('submit', event => {
     event.preventDefault()
     const number = enterInput.value
-    // fetch(`http://localhost:8080/${currentTarget}?number=${number}`)
-    fetch(`https://simple-converter.herokuapp.com/${currentTarget}?number=${number}`)
+    fetch(`http://localhost:8080/${currentTarget}?number=${number}`)
         .then((response) => {
             if (response.ok) fillResult(response.text())
             else showErrorMessage(response.text())
