@@ -36,10 +36,7 @@ public class ConverterToArabic {
 
         private int countI() {
             checkIfCorrect('I', 'L');
-            if (getNextRomanDigit() == 'V' || getNextRomanDigit() == 'X')
-                return -1;
-            else
-                return 1;
+            return getNextRomanDigit() == 'V' || getNextRomanDigit() == 'X' ? -1 : 1;
         }
 
         private int countV() {
@@ -49,10 +46,7 @@ public class ConverterToArabic {
 
         private int countX() {
             checkIfCorrect('X', 'D');
-            if (getNextRomanDigit() == 'L' || getNextRomanDigit() == 'C')
-                return -10;
-            else
-                return 10;
+            return getNextRomanDigit() == 'L' || getNextRomanDigit() == 'C' ? -10 : 10;
         }
 
         private int countL() {
@@ -62,10 +56,7 @@ public class ConverterToArabic {
 
         private int countC() {
             checkIfCorrect('C');
-            if (getNextRomanDigit() == 'D' || getNextRomanDigit() == 'M')
-                return -100;
-            else
-                return 100;
+            return getNextRomanDigit() == 'D' || getNextRomanDigit() == 'M' ? -100 : 100;
         }
 
         private int countD() {
@@ -109,7 +100,8 @@ public class ConverterToArabic {
 
         private boolean isDigitBetweenTwoTheSameDigits(char romanDigit) { // prevents from situations like these IVI, CDC,XCX,
             return checkIfSurroundingsCorrect(romanDigit, this::isSameDigitOnBothSides) ||
-                    (romanDigit == 'V' || romanDigit == 'L' || romanDigit == 'D') && romanDigit == getNextRomanDigit(currentDigitIndex + 1);
+                    (romanDigit == 'V' || romanDigit == 'L' || romanDigit == 'D') &&
+                            romanDigit == getNextRomanDigit(currentDigitIndex + 1);
             // isNextCharWrong() prevents possibility of occurring e.g. VV
             //        // but it doesn't prevent situation such as VIV
         }
@@ -136,31 +128,21 @@ public class ConverterToArabic {
         }
 
         private char getNextRomanDigit(int index) {
-            if ((index + 1) < romanNumber.length())
-                return romanNumber.charAt(index + 1);
-            else
-                return '0';
+            return (index + 1) < romanNumber.length() ? romanNumber.charAt(index + 1) : '0';
         }
 
         private char getNextRomanDigit() {
-            if ((currentDigitIndex + 1) < romanNumber.length())
-                return romanNumber.charAt(currentDigitIndex + 1);
-            else
-                return '0';
+            return (currentDigitIndex + 1) < romanNumber.length() ? romanNumber.charAt(currentDigitIndex + 1) : '0';
         }
 
         private char getPrevRomanDigit() {
-            if ((currentDigitIndex - 1) >= 0)
-                return romanNumber.charAt(currentDigitIndex - 1);
-            else
-                return '0'; //any char different from roman digits, it won't be considered anyway
+            //any char different from roman digits, it won't be considered anyway
+            return (currentDigitIndex - 1) >= 0 ? romanNumber.charAt(currentDigitIndex - 1) : '0';
         }
 
         private char getPrevRomanDigit(int index) {
-            if ((index - 1) >= 0)
-                return romanNumber.charAt(index - 1);
-            else
-                return '0'; //any char different from roman digits, it won't be considered anyway
+            //any char different from roman digits, it won't be considered anyway
+            return (index - 1) >= 0 ? romanNumber.charAt(index - 1) : '0';
         }
     }
 

@@ -6,9 +6,13 @@ import org.springframework.stereotype.Service;
 public class ConverterToRoman {
 
     public String convert(int arabicNumber) {
+        checkIfInRange(arabicNumber);
+        return countRomanValue(arabicNumber);
+    }
+
+    private static void checkIfInRange(int arabicNumber) {
         if (arabicNumber <= 0) throw new BadArabicNumberException("The number must be greater than 0");
         if (arabicNumber >= 4000) throw new BadArabicNumberException("The number must be smaller than 4000");
-        return countRomanValue(arabicNumber);
     }
 
     private String countRomanValue(Integer arabicNumber) {
@@ -30,51 +34,39 @@ public class ConverterToRoman {
     }
 
     private String appendMax8(Integer arabicNumber) {
-        if (arabicNumber == 4) {
-            return "IV";
-        } else {
-            return 'V' + countRomanValue(arabicNumber - 5);
-        }
+        return arabicNumber == 4
+                ? "IV"
+                : 'V' + countRomanValue(arabicNumber - 5);
     }
 
     private String appendMax39(Integer arabicNumber) {
-        if (arabicNumber == 9) {
-            return "IX";
-        } else {
-            return "X".repeat(arabicNumber / 10) + countRomanValue(arabicNumber - arabicNumber / 10 * 10);
-        }
+        return arabicNumber == 9
+                ? "IX"
+                : "X".repeat(arabicNumber / 10) + countRomanValue(arabicNumber - arabicNumber / 10 * 10);
     }
 
     private String appendMax89(Integer arabicNumber) {
-        if (arabicNumber / 10 == 4) {
-            return "XL" + countRomanValue(arabicNumber - 40);
-        } else {
-            return "L" + countRomanValue(arabicNumber - 50);
-        }
+        return arabicNumber / 10 == 4
+                ? "XL" + countRomanValue(arabicNumber - 40)
+                : "L" + countRomanValue(arabicNumber - 50);
     }
 
     private String appendMax399(Integer arabicNumber) {
-        if (arabicNumber / 10 == 9) {
-            return "XC" + countRomanValue(arabicNumber - 90);
-        } else {
-            return "C".repeat(arabicNumber / 100) + countRomanValue(arabicNumber - arabicNumber / 100 * 100);
-        }
+        return arabicNumber / 10 == 9
+                ? "XC" + countRomanValue(arabicNumber - 90)
+                : "C".repeat(arabicNumber / 100) + countRomanValue(arabicNumber - arabicNumber / 100 * 100);
     }
 
     private String appendMax899(Integer arabicNumber) {
-        if (arabicNumber / 100 == 4) {
-            return "CD" + countRomanValue(arabicNumber - 400);
-        } else {
-            return "D" + countRomanValue(arabicNumber - 500);
-        }
+        return arabicNumber / 100 == 4
+                ? "CD" + countRomanValue(arabicNumber - 400)
+                : "D" + countRomanValue(arabicNumber - 500);
     }
 
     private String appendMax3999(Integer arabicNumber) {
-        if (arabicNumber / 100 == 9) {
-            return "CM" + countRomanValue(arabicNumber - 900);
-        } else {
-            return "M".repeat(arabicNumber / 1000) + countRomanValue(arabicNumber - arabicNumber / 1000 * 1000);
-        }
+        return arabicNumber / 100 == 9
+                ? "CM" + countRomanValue(arabicNumber - 900)
+                : "M".repeat(arabicNumber / 1000) + countRomanValue(arabicNumber - arabicNumber / 1000 * 1000);
     }
 
     static class BadArabicNumberException extends RuntimeException {
