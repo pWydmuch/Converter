@@ -13,7 +13,14 @@ public class ConverterToArabic {
                 .sum();
     }
 
-    private record DigitValueResolver(String romanNumber, int currentDigitIndex) {
+    private static class DigitValueResolver {
+        private final String romanNumber;
+        private final int currentDigitIndex;
+
+        public DigitValueResolver(String romanNumber, int currentDigitIndex) {
+            this.romanNumber = romanNumber;
+            this.currentDigitIndex = currentDigitIndex;
+        }
 
         private static final Character[] ROMAN_DIGITS = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 
