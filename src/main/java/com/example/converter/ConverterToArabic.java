@@ -1,12 +1,9 @@
 package com.example.converter;
 
-import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
-@Service
 public class ConverterToArabic {
 
     public int convert(String romanNumber) {

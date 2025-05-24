@@ -1,8 +1,5 @@
 package com.example.converter;
 
-import org.springframework.stereotype.Service;
-
-@Service
 public class ConverterToRoman {
 
     public String convert(int arabicNumber) {
