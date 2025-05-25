@@ -11,6 +11,9 @@ client-secret.json
 .settings
 .springBeans
 .sts4-cache
+terraform/.terraform
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
 
 ### IntelliJ IDEA ###
 .idea
