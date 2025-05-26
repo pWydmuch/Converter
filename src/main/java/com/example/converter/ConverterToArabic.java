@@ -21,6 +21,12 @@ public class ConverterToArabic {
             this.romanNumber = romanNumber;
             this.currentDigitIndex = currentDigitIndex;
         }
+        // TODO refactor to enum -> for no need to pass romanDigit as an argument
+//        enum RomanDigits {
+//            I, V, X, L, C, D, M
+//
+//            abstract int count();
+//        }
 
         private static final Character[] ROMAN_DIGITS = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 
