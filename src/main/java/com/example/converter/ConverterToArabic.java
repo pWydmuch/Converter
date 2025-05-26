@@ -40,7 +40,7 @@ public class ConverterToArabic {
 
         private int countI() {
             checkIfCorrect('I', 'L');
-            return getNextRomanDigit() == 'V' || getNextRomanDigit() == 'X' ? -1 : 1;
+            return isNextEqualTo('V')|| isNextEqualTo('X') ? -1 : 1;
         }
 
         private int countV() {
@@ -50,7 +50,7 @@ public class ConverterToArabic {
 
         private int countX() {
             checkIfCorrect('X', 'D');
-            return getNextRomanDigit() == 'L' || getNextRomanDigit() == 'C' ? -10 : 10;
+            return isNextEqualTo('L') || isNextEqualTo('C') ? -10 : 10;
         }
 
         private int countL() {
@@ -60,7 +60,7 @@ public class ConverterToArabic {
 
         private int countC() {
             checkIfCorrect('C');
-            return getNextRomanDigit() == 'D' || getNextRomanDigit() == 'M' ? -100 : 100;
+            return isNextEqualTo('D') || isNextEqualTo('M') ? -100 : 100;
         }
 
         private int countD() {
@@ -86,7 +86,7 @@ public class ConverterToArabic {
         private boolean isNextDigitIncorrect(char lowestNextInvalid) {
             return Arrays.stream(ROMAN_DIGITS)
                     .dropWhile(digit -> !digit.equals(lowestNextInvalid))
-                    .anyMatch(digit -> getNextRomanDigit() == digit);
+                    .anyMatch(this::isNextEqualTo);
         }
 
         private boolean isOrderOfDigitsIncorrect(char romanDigit) {
@@ -97,15 +97,15 @@ public class ConverterToArabic {
 
         private boolean isTooManyTheSameConsecutiveDigits(char romanDigit) {
             return (romanDigit == 'I' || romanDigit == 'X' || romanDigit == 'C' || romanDigit == 'M')
-                    && romanDigit == getNextRomanDigit()
-                    && romanDigit == getNextRomanDigit(currentDigitIndex + 1)
-                    && romanDigit == getNextRomanDigit(currentDigitIndex + 2);// if 4 consecutive numerals are the same
+                    && isNextEqualTo(romanDigit)
+                    && isNextEqualTo(currentDigitIndex + 1, romanDigit)
+                    && isNextEqualTo(currentDigitIndex + 2, romanDigit);// if 4 consecutive numerals are the same
         }
 
         private boolean isDigitBetweenTwoTheSameDigits(char romanDigit) { // prevents from situations like these IVI, CDC,XCX,
             return checkIfSurroundingsCorrect(romanDigit, this::isSameDigitOnBothSides) ||
                     (romanDigit == 'V' || romanDigit == 'L' || romanDigit == 'D') &&
-                            romanDigit == getNextRomanDigit(currentDigitIndex + 1);
+                            isNextEqualTo(currentDigitIndex + 1, romanDigit);
             // isNextCharWrong() prevents possibility of occurring e.g. VV
             //        // but it doesn't prevent situation such as VIV
         }
@@ -124,29 +124,27 @@ public class ConverterToArabic {
         }
 
         private boolean isTwoSameBefore(char romanDigit) {
-            return getPrevRomanDigit(currentDigitIndex - 1) == romanDigit && getPrevRomanDigit() == romanDigit;
+            return isPrevEqualTo(currentDigitIndex - 1, romanDigit) && isPrevEqualTo(romanDigit);
         }
 
         private boolean isSameDigitOnBothSides(char romanDigit) {
-            return getPrevRomanDigit() == romanDigit && getNextRomanDigit() == romanDigit;
+            return isPrevEqualTo(romanDigit) && isNextEqualTo(romanDigit);
         }
 
-        private char getNextRomanDigit(int index) {
-            return (index + 1) < romanNumber.length() ? romanNumber.charAt(index + 1) : '0';
+        private boolean isNextEqualTo(char romanDigit) {
+            return isNextEqualTo(currentDigitIndex, romanDigit);
         }
 
-        private char getNextRomanDigit() {
-            return (currentDigitIndex + 1) < romanNumber.length() ? romanNumber.charAt(currentDigitIndex + 1) : '0';
+        private boolean isPrevEqualTo(char romanDigit) {
+            return isPrevEqualTo(currentDigitIndex, romanDigit);
         }
 
-        private char getPrevRomanDigit() {
-            //any char different from roman digits, it won't be considered anyway
-            return (currentDigitIndex - 1) >= 0 ? romanNumber.charAt(currentDigitIndex - 1) : '0';
+        private boolean isNextEqualTo(int index, char romanDigit) {
+            return (index + 1) < romanNumber.length() && romanNumber.charAt(index + 1) == romanDigit;
         }
 
-        private char getPrevRomanDigit(int index) {
-            //any char different from roman digits, it won't be considered anyway
-            return (index - 1) >= 0 ? romanNumber.charAt(index - 1) : '0';
+        private boolean isPrevEqualTo(int index, char romanDigit) {
+            return (index - 1) >= 0 && romanNumber.charAt(index - 1) == romanDigit;
         }
     }
 
