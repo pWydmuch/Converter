@@ -1,15 +1,17 @@
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const form = document.querySelector('.my-form')
 const toArabicRadio = document.querySelector('#to-arabic')
 const toRomanRadio = document.querySelector('#to-roman')
 const enterInput = document.querySelector('#enter-input')
 const result = document.querySelector('#result')
 const alert = document.querySelector('.alert')
-let currentTarget = 'arabic-equiv'
+let currentTarget = 'roman-to-arabic'
 
 form.addEventListener('submit', event => {
     event.preventDefault()
     const number = enterInput.value
-    fetch(`http://localhost:8080/${currentTarget}?number=${number}`)
+    fetch(`${apiUrl}/${currentTarget}?number=${number}`)
         .then((response) => {
             if (response.ok) fillResult(response.text())
             else showErrorMessage(response.text())
@@ -35,7 +37,7 @@ toRomanRadio.addEventListener('click', () => {
     enterInput.value = ""
     enterInput.focus()
     alert.style.display = 'none'
-    currentTarget = 'roman-equiv'
+    currentTarget = 'arabic-to-roman'
 })
 
 toArabicRadio.addEventListener('click', () => {

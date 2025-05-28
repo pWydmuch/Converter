@@ -1,6 +1,10 @@
 resource "aws_apigatewayv2_api" "converter_api" {
   name          = "converter-api"
   protocol_type = "HTTP"
+  cors_configuration {
+    allow_methods = ["GET"]
+    allow_origins = ["*"]
+  }
 }
 
 resource "aws_apigatewayv2_stage" "converter_stage" {
