@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "frontend_config" {
-  bucket = "converter-frontend-config"
+  bucket = "p11h-converter-frontend-config"
 }
 
 resource "aws_s3_bucket_versioning" "frontend_config" {
@@ -12,10 +12,10 @@ resource "aws_s3_bucket_versioning" "frontend_config" {
 resource "aws_s3_bucket_public_access_block" "frontend_config" {
   bucket = aws_s3_bucket.frontend_config.id
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_object" "api_url" {
@@ -23,5 +23,4 @@ resource "aws_s3_object" "api_url" {
   key    = "api-url.txt"
   content = aws_apigatewayv2_stage.converter_stage.invoke_url
   content_type = "text/plain"
-  acl    = "public-read"
 } 

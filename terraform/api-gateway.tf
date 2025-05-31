@@ -43,7 +43,6 @@ resource "aws_apigatewayv2_route" "arabic_to_roman" {
   target    = "integrations/${aws_apigatewayv2_integration.arabic_to_roman.id}"
 }
 
-# Lambda permissions for API Gateway
 resource "aws_lambda_permission" "roman_to_arabic" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
