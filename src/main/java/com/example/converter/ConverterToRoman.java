@@ -39,7 +39,7 @@ public class ConverterToRoman {
     private String appendMax39(Integer arabicNumber) {
         return arabicNumber == 9
                 ? "IX"
-                : "X".repeat(arabicNumber / 10) + countRomanValue(arabicNumber - arabicNumber / 10 * 10);
+                : "X".repeat(arabicNumber / 10) + countRomanValue(getNumberConsistingOfNRightMostDigits(arabicNumber, 1));
     }
 
     private String appendMax89(Integer arabicNumber) {
@@ -51,7 +51,7 @@ public class ConverterToRoman {
     private String appendMax399(Integer arabicNumber) {
         return arabicNumber / 10 == 9
                 ? "XC" + countRomanValue(arabicNumber - 90)
-                : "C".repeat(arabicNumber / 100) + countRomanValue(arabicNumber - arabicNumber / 100 * 100);
+                : "C".repeat(arabicNumber / 100) + countRomanValue(getNumberConsistingOfNRightMostDigits(arabicNumber, 2));
     }
 
     private String appendMax899(Integer arabicNumber) {
@@ -63,7 +63,16 @@ public class ConverterToRoman {
     private String appendMax3999(Integer arabicNumber) {
         return arabicNumber / 100 == 9
                 ? "CM" + countRomanValue(arabicNumber - 900)
-                : "M".repeat(arabicNumber / 1000) + countRomanValue(arabicNumber - arabicNumber / 1000 * 1000);
+                : "M".repeat(arabicNumber / 1000) + countRomanValue(getNumberConsistingOfNRightMostDigits(arabicNumber, 3));
+    }
+
+    /**
+     (123, 1) returns 3 (last digit)
+     (123, 2) returns 23 (last two digits)
+     (123, 3) returns 123 (last three digits)
+     */
+    private int getNumberConsistingOfNRightMostDigits(int number, int howManyRightMostDigits) {
+        return number % (int) Math.pow(10, howManyRightMostDigits);
     }
 
     static class BadArabicNumberException extends RuntimeException {
