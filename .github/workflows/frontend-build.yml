@@ -26,9 +26,10 @@ jobs:
         aws-region: eu-west-1
 
     - name: Read API URL from S3
+      id: api_url
       run: |
         aws s3 cp s3://p11h-converter-frontend-config/api-url.txt ./api-url.txt
-        cat api-url.txt
+        echo "API_URL=$(cat api-url.txt)" >> $GITHUB_ENV
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -40,7 +41,7 @@ jobs:
 
     - name: Build frontend
       run: |
-        echo "VITE_API_URL=$(cat ../api-url.txt)" > .env.production
+        echo "VITE_API_URL=${{ env.API_URL }}" > .env.production
         npm run build
 
     - name: Deploy to S3
