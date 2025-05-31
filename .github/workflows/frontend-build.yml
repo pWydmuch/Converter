@@ -21,7 +21,7 @@ jobs:
 
     - name: Read from S3
       run: |
-        aws s3 cp s3://${{ secrets.S3_BUCKET }}/api-url.txt ./api-url.txt
+        aws s3 cp s3://p11h-converter-frontend-config/api-url.txt ./api-url.txt
         cat api-url.txt
 
     - name: Test Echo
