@@ -97,8 +97,8 @@ public class ConverterToArabic {
 
         private boolean isOrderOfDigitsIncorrect(char romanDigit) {
             return isTooManyTheSameConsecutiveDigits(romanDigit) ||
-                    isTwoTheSameDigitsBeforeDigit(romanDigit) ||
-                    isDigitBetweenTwoTheSameDigits(romanDigit);
+                    areTwoDigitsTheSameBeforeDigit(romanDigit) ||
+                    isDigitBetweenTwoSameDigits(romanDigit);
         }
 
         private boolean isTooManyTheSameConsecutiveDigits(char romanDigit) {
@@ -108,19 +108,19 @@ public class ConverterToArabic {
                     && isNextEqualTo(currentDigitIndex + 2, romanDigit);// if 4 consecutive numerals are the same
         }
 
-        private boolean isDigitBetweenTwoTheSameDigits(char romanDigit) { // prevents from situations like these IVI, CDC,XCX,
-            return checkIfSurroundingsCorrect(romanDigit, this::isSameDigitOnBothSides) ||
+        private boolean isDigitBetweenTwoSameDigits(char romanDigit) { // prevents from situations like these IVI, CDC,XCX,
+            return areSurroundingsCorrect(romanDigit, this::isSameDigitOnBothSides) ||
                     (romanDigit == 'V' || romanDigit == 'L' || romanDigit == 'D') &&
                             isNextEqualTo(currentDigitIndex + 1, romanDigit);
             // isNextCharWrong() prevents possibility of occurring e.g. VV
             //        // but it doesn't prevent situation such as VIV
         }
 
-        private boolean isTwoTheSameDigitsBeforeDigit(char romanDigit) { // checks how many the same numerals are before the certain numeral, there can't be more than one in a row
-            return checkIfSurroundingsCorrect(romanDigit, this::isTwoSameBefore);
+        private boolean areTwoDigitsTheSameBeforeDigit(char romanDigit) { // checks how many the same numerals are before the certain numeral, there can't be more than one in a row
+            return areSurroundingsCorrect(romanDigit, this::areTwoSameBefore);
         }
 
-        private boolean checkIfSurroundingsCorrect(char romanDigit, Predicate<Character> checker) {
+        private boolean areSurroundingsCorrect(char romanDigit, Predicate<Character> checker) {
             return romanDigit == 'V' && checker.test('I') ||
                     romanDigit == 'X' && checker.test('I') ||
                     romanDigit == 'L' && checker.test('X') ||
@@ -129,7 +129,7 @@ public class ConverterToArabic {
                     romanDigit == 'M' && checker.test('C');
         }
 
-        private boolean isTwoSameBefore(char romanDigit) {
+        private boolean areTwoSameBefore(char romanDigit) {
             return isPrevEqualTo(currentDigitIndex - 1, romanDigit) && isPrevEqualTo(romanDigit);
         }
 
