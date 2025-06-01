@@ -17,7 +17,7 @@ class ConverterToRomanTest {
 
     @ParameterizedTest
     @MethodSource("dataProvider")
-    void convertToRoman(int arabic, String expectedRoman) {
+    public void convertToRoman(int arabic, String expectedRoman) {
         assertThat(converter.convert(arabic)).isEqualTo(expectedRoman);
     }
 
@@ -35,7 +35,7 @@ class ConverterToRomanTest {
 
     @ParameterizedTest
     @ValueSource(ints = {0,100000})
-    void checkIfExceptionIsThrown(int arabic) {
+    public void checkIfExceptionIsThrown(int arabic) {
         assertThatExceptionOfType(ConverterToRoman.BadArabicNumberException.class)
                 .isThrownBy(() -> converter.convert(arabic));
     }
