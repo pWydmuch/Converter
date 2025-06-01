@@ -46,6 +46,16 @@ resource "aws_iam_role_policy" "s3_access" {
           "arn:aws:s3:::p11h-converter",
           "arn:aws:s3:::p11h-converter/*"
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "lambda:UpdateFunctionCode"
+        ]
+        Resource = [
+          aws_lambda_function.converter_to_roman.arn,
+          aws_lambda_function.converter_to_arabic.arn
+        ]
       }
     ]
   })
