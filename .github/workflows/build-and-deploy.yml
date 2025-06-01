@@ -1,4 +1,4 @@
-name: Frontend Deploy
+name: Build and Deploy
 
 on:
   push:
@@ -10,7 +10,23 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Run Java tests
+      run: ./mvnw test
+
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     defaults:
       run:
