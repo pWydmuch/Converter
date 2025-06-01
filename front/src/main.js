@@ -45,5 +45,5 @@ toArabicRadio.addEventListener('click', () => {
     enterInput.value = ""
     enterInput.focus()
     alert.style.display = 'none'
-    currentTarget = 'arabic-equiv'
+    currentTarget = 'roman-to-arabic'
 })
