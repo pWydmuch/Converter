@@ -36,6 +36,7 @@ toRomanRadio.addEventListener('click', () => {
     result.value = ""
     enterInput.value = ""
     enterInput.focus()
+    enterInput.placeholder = 'eg 12'
     alert.style.display = 'none'
     currentTarget = 'arabic-to-roman'
 })
@@ -44,6 +45,7 @@ toArabicRadio.addEventListener('click', () => {
     result.value = ""
     enterInput.value = ""
     enterInput.focus()
+    enterInput.placeholder = 'eg XII'
     alert.style.display = 'none'
     currentTarget = 'roman-to-arabic'
 })
