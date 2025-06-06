@@ -43,8 +43,8 @@ resource "aws_iam_role_policy" "s3_access" {
           "s3:ListBucket"
         ]
         Resource = [
-          "arn:aws:s3:::p11h-converter",
-          "arn:aws:s3:::p11h-converter/*"
+          aws_s3_bucket.frontend.arn,
+          "${aws_s3_bucket.frontend.arn}/*"
         ]
       },
       {

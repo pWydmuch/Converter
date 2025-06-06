@@ -7,6 +7,7 @@ resource "aws_s3_bucket" "lambda_bucket" {
   bucket = random_pet.lambda_bucket_name.id
 }
 
+#Get rid of it
 resource "aws_s3_object" "lambda" {
   bucket = aws_s3_bucket.lambda_bucket.id
   key    = "converter.jar"

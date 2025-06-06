@@ -94,4 +94,9 @@ jobs:
         npm run build
 
     - name: Deploy to S3
-      run: aws s3 sync dist/ s3://p11h-converter --delete 
+      run: aws s3 sync dist/ s3://p11h-converter --delete
+
+    - name: Invalidate CloudFront cache
+      run: |
+        DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?contains(@, 'p11h-converter')]].Id" --output text)
+        aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*" 
