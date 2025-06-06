@@ -56,6 +56,14 @@ resource "aws_iam_role_policy" "s3_access" {
           aws_lambda_function.converter_to_roman.arn,
           aws_lambda_function.converter_to_arabic.arn
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "cloudfront:CreateInvalidation",
+          "cloudfront:ListDistributions"
+        ]
+        Resource = "*"
       }
     ]
   })
