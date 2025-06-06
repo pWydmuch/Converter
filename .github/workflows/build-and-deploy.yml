@@ -98,5 +98,5 @@ jobs:
 
     - name: Invalidate CloudFront cache
       run: |
-        DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?contains(@, 'p11h-converter')]].Id" --output text)
+        DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[0].Id" --output text)
         aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*" 
