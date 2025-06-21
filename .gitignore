@@ -1,4 +1,6 @@
 /target/
+/terraform
+/front
 !.mvn/wrapper/maven-wrapper.jar
 !.mvn/wrapper/MavenWrapperDownloader.java
 !.mvn/*
