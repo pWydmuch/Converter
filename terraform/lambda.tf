@@ -25,7 +25,7 @@ resource "aws_lambda_function" "converter_to_arabic" {
   s3_bucket     = aws_s3_bucket.lambda_bucket.id
   s3_key        = aws_s3_object.lambda.key
   runtime       = "java21"
-  handler       = "com.example.converter.RomanLambdaHandler::handleRequest"
+  handler       = "com.example.converter.ToArabicLambdaHandler::handleRequest"
   timeout       = 30
   memory_size   = 256
 }
@@ -36,7 +36,7 @@ resource "aws_lambda_function" "converter_to_roman" {
   s3_bucket     = aws_s3_bucket.lambda_bucket.id
   s3_key        = aws_s3_object.lambda.key
   runtime       = "java21"
-  handler       = "com.example.converter.ArabicLambdaHandler::handleRequest"
+  handler       = "com.example.converter.ToRomanLambdaHandler::handleRequest"
   timeout       = 30
   memory_size   = 256
 }
