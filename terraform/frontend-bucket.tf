@@ -1,5 +1,4 @@
 # S3 bucket for frontend,
-# TODO it's a bucket now you have this done without terraform
 resource "aws_s3_bucket" "frontend" {
   bucket = "p11h-converter"
   force_destroy = true
