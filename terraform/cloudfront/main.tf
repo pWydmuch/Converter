@@ -1,11 +1,5 @@
-# S3 bucket for frontend,
-# TODO it's a bucket now you have this done without terraform
-resource "aws_s3_bucket" "frontend" {
-  bucket = "p11h-converter"
-}
-
 resource "aws_s3_bucket_website_configuration" "frontend" {
-  bucket = aws_s3_bucket.frontend.id
+  bucket = var.frontend_bucket.id
 
   index_document {
     suffix = "index.html"
@@ -14,16 +8,6 @@ resource "aws_s3_bucket_website_configuration" "frontend" {
   error_document {
     key = "index.html"
   }
-}
-
-# Block all public access to the S3 bucket
-resource "aws_s3_bucket_public_access_block" "frontend" {
-  bucket = aws_s3_bucket.frontend.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
 }
 
 # Create Origin Access Control for CloudFront
@@ -38,9 +22,9 @@ resource "aws_cloudfront_origin_access_control" "frontend" {
 # CloudFront distribution for the frontend
 resource "aws_cloudfront_distribution" "frontend" {
   origin {
-    domain_name              = aws_s3_bucket.frontend.bucket_regional_domain_name
+    domain_name              = var.frontend_bucket.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.frontend.id
-    origin_id                = "S3-${aws_s3_bucket.frontend.bucket}"
+    origin_id                = "S3-${var.frontend_bucket.bucket}"
   }
 
   enabled             = true
@@ -51,7 +35,7 @@ resource "aws_cloudfront_distribution" "frontend" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "S3-${aws_s3_bucket.frontend.bucket}"
+    target_origin_id = "S3-${var.frontend_bucket.bucket}"
 
     forwarded_values {
       query_string = false
@@ -79,7 +63,7 @@ resource "aws_cloudfront_distribution" "frontend" {
 
 # Update S3 bucket policy to allow access only from CloudFront
 resource "aws_s3_bucket_policy" "frontend" {
-  bucket = aws_s3_bucket.frontend.id
+  bucket = var.frontend_bucket.id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -90,7 +74,7 @@ resource "aws_s3_bucket_policy" "frontend" {
           Service = "cloudfront.amazonaws.com"
         }
         Action   = "s3:GetObject"
-        Resource = "${aws_s3_bucket.frontend.arn}/*"
+        Resource = "${var.frontend_bucket.arn}/*"
         Condition = {
           StringEquals = {
             "AWS:SourceArn" = aws_cloudfront_distribution.frontend.arn

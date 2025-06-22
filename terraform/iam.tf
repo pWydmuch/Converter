@@ -58,6 +58,7 @@ resource "aws_iam_role_policy" "s3_access" {
         ]
       },
       {
+        # TODO move to cloudfront module
         Effect = "Allow"
         Action = [
           "cloudfront:CreateInvalidation",
