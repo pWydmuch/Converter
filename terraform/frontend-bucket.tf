@@ -2,6 +2,7 @@
 # TODO it's a bucket now you have this done without terraform
 resource "aws_s3_bucket" "frontend" {
   bucket = "p11h-converter"
+  force_destroy = true
 }
 # Block all public access to the S3 bucket
 resource "aws_s3_bucket_public_access_block" "frontend" {
