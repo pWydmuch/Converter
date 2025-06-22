@@ -10,6 +10,7 @@ public class ArabicLambdaHandler implements RequestHandler<APIGatewayProxyReques
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
+        System.out.println(input.getHttpMethod());
         try {
             String arabicNumberStr = input.getQueryStringParameters().get("number");
             String result = converter.convert(Integer.parseInt(arabicNumberStr));
