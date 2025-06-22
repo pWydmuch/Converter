@@ -95,8 +95,8 @@ jobs:
 
     - name: Deploy to S3
       run: aws s3 sync dist/ s3://p11h-converter --delete
-
-    - name: Invalidate CloudFront cache
-      run: |
-        DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[0].Id" --output text)
-        aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
+# TODO "if" that
+#    - name: Invalidate CloudFront cache
+#      run: |
+#        DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[0].Id" --output text)
+#        aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"

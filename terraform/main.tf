@@ -14,3 +14,7 @@ variable "enable_cloudfront" {
   type    = bool
   default = false
 }
+
+output "cloudfront_domain" {
+  value = var.enable_cloudfront ? module.cloudfront[0].cloudfront_domain : null
+}
