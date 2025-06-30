@@ -28,6 +28,12 @@ resource "aws_lambda_function" "converter_to_arabic" {
   handler       = "com.example.converter.ToArabicLambdaHandler::handleRequest"
   timeout       = 30
   memory_size   = 256
+
+  environment {
+    variables = {
+      TEST_ENV_VAR = "test_value"
+    }
+  }
 }
 
 resource "aws_lambda_function" "converter_to_roman" {

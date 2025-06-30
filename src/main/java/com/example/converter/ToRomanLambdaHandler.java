@@ -10,7 +10,6 @@ public class ToRomanLambdaHandler implements RequestHandler<APIGatewayProxyReque
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
-        System.out.println("The method is: " + input.getHttpMethod());
         try {
             String arabicNumberStr = input.getQueryStringParameters().get("number");
             String result = converter.convert(Integer.parseInt(arabicNumberStr));

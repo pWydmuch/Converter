@@ -12,6 +12,7 @@ public class ToArabicLambdaHandler implements RequestHandler<APIGatewayProxyRequ
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
         try {
             String romanNumber = input.getQueryStringParameters().get("number");
+            System.out.println("The test value is: " + System.getenv("TEST_ENV_VAR"));
             int result = converter.convert(romanNumber);
             return new APIGatewayProxyResponseEvent()
                     .withStatusCode(200)
