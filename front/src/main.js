@@ -55,6 +55,15 @@ toArabicRadio.addEventListener('click', () => {
     currentTarget = 'roman-to-arabic'
 })
 
+last5Checkbox.addEventListener('click', e => {
+    if (e.target.checked) {
+        fetchRecents();
+
+    } else {
+        recentList.innerHTML = ''
+    }
+})
+
 const fetchRecents = () => {
     fetch(`${apiUrl}/recents`)
         .then((response) => {

@@ -14,13 +14,13 @@ public class ToRomanLambdaHandler implements RequestHandler<APIGatewayProxyReque
 
     private final Jedis jedis = new Jedis(System.getenv("REDIS_HOST"), 6379);
 
-
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
         try {
             String arabicNumberStr = input.getQueryStringParameters().get("number");
             String result = converter.convert(Integer.parseInt(arabicNumberStr));
-            jedis.lpush(RECENTS_LIST_NAME, result);
+            String value = arabicNumberStr + "=" + result;
+            jedis.lpush(RECENTS_LIST_NAME, value);
             jedis.ltrim(RECENTS_LIST_NAME, 0, 4);
 
             return new APIGatewayProxyResponseEvent()
