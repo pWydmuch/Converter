@@ -23,10 +23,12 @@ public class GetRecentsLambdaHandler implements RequestHandler<APIGatewayProxyRe
                 .map(parts -> List.of(parts[0], parts[1]))
                 .toList();
         try {
+            String body = objectMapper.writeValueAsString(list);
+            context.getLogger().log("Recent conversions: " + body);
             return new APIGatewayProxyResponseEvent()
                     .withStatusCode(200)
                     .withHeaders(Map.of("Content-Type", "application/json"))
-                    .withBody(objectMapper.writeValueAsString(list));
+                    .withBody(body);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
