@@ -54,7 +54,8 @@ resource "aws_iam_role_policy" "s3_access" {
         ]
         Resource = [
           aws_lambda_function.converter_to_roman.arn,
-          aws_lambda_function.converter_to_arabic.arn
+          aws_lambda_function.converter_to_arabic.arn,
+          aws_lambda_function.get_recents.arn
         ]
       },
       {

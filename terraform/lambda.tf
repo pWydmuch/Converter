@@ -41,6 +41,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
+  # TODO conditionally on jumpbox
   enable_dns_support   = true
   enable_dns_hostnames = true
 }
@@ -66,7 +67,7 @@ resource "aws_security_group" "lambda_sg" {
 
   # No ingress needed for Lambda (unless you invoke it from VPC, which is rare)
 }
-#TODO Is this security group rule necessary?
+#TODO Is this security group rule necessary? -> yes it is
 resource "aws_security_group_rule" "allow_https_from_self" {
   type                     = "ingress"
   from_port                = 443
@@ -108,4 +109,37 @@ resource "aws_lambda_function" "converter_to_roman" {
   handler       = "com.example.converter.ToRomanLambdaHandler::handleRequest"
   timeout       = 30
   memory_size   = 256
+
+  vpc_config {
+    subnet_ids         = [aws_subnet.private.id]
+    security_group_ids = [aws_security_group.lambda_sg.id]
+  }
+
+  environment {
+    variables = {
+      REDIS_HOST    = aws_elasticache_cluster.redis.cache_nodes[0].address
+    }
+  }
+}
+
+resource "aws_lambda_function" "get_recents" {
+  function_name = "get-recents"
+  role          = aws_iam_role.lambda_role.arn
+  s3_bucket     = aws_s3_bucket.lambda_bucket.id
+  s3_key        = aws_s3_object.lambda.key
+  runtime       = "java21"
+  handler       = "com.example.converter.GetRecentsLambdaHandler::handleRequest"
+  timeout       = 30
+  memory_size   = 256
+
+  vpc_config {
+    subnet_ids         = [aws_subnet.private.id]
+    security_group_ids = [aws_security_group.lambda_sg.id]
+  }
+
+  environment {
+    variables = {
+      REDIS_HOST    = aws_elasticache_cluster.redis.cache_nodes[0].address
+    }
+  }
 }

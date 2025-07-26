@@ -36,6 +36,7 @@ resource "aws_iam_instance_profile" "jumpbox_profile" {
   role = aws_iam_role.jumpbox_ssm_role.name
 }
 
+# TODO conditionally if jumpbox
 resource "aws_vpc_endpoint" "ssm" {
   vpc_id             = aws_vpc.main.id
   service_name       = "com.amazonaws.eu-west-1.ssm"
