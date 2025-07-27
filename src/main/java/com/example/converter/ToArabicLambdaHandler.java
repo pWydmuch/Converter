@@ -28,6 +28,8 @@ public class ToArabicLambdaHandler implements RequestHandler<APIGatewayProxyRequ
                     .withStatusCode(400)
                     .withBody(e.getMessage());
         } catch (Exception e) {
+            context.getLogger().log(e.getMessage());
+            e.printStackTrace();
             return new APIGatewayProxyResponseEvent()
                     .withStatusCode(500)
                     .withBody("Internal server error");
