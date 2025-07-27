@@ -42,8 +42,8 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
   # TODO conditionally on jumpbox
-  enable_dns_support   = true
-  enable_dns_hostnames = true
+  enable_dns_support   = var.enable_jumpbox
+  enable_dns_hostnames = var.enable_jumpbox
 }
 
 resource "aws_subnet" "private" {
@@ -94,7 +94,6 @@ resource "aws_lambda_function" "converter_to_arabic" {
 
   environment {
     variables = {
-      TEST_ENV_VAR = "test_value"
       REDIS_HOST    = aws_elasticache_cluster.redis.cache_nodes[0].address
     }
   }

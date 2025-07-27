@@ -4,15 +4,13 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import redis.clients.jedis.Jedis;
+import static com.example.converter.RedisClient.RECENTS_LIST_NAME;
+import static com.example.converter.RedisClient.JEDIS;
+
 
 public class ToRomanLambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-    private static final String RECENTS_LIST_NAME = "recents";
-
     private final ConverterToRoman converter = new ConverterToRoman();
-
-    private final Jedis jedis = new Jedis(System.getenv("REDIS_HOST"), 6379);
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
@@ -20,8 +18,8 @@ public class ToRomanLambdaHandler implements RequestHandler<APIGatewayProxyReque
             String arabicNumberStr = input.getQueryStringParameters().get("number");
             String result = converter.convert(Integer.parseInt(arabicNumberStr));
             String value = arabicNumberStr + "=" + result;
-            jedis.lpush(RECENTS_LIST_NAME, value);
-            jedis.ltrim(RECENTS_LIST_NAME, 0, 4);
+            JEDIS.lpush(RECENTS_LIST_NAME, value);
+            JEDIS.ltrim(RECENTS_LIST_NAME, 0, 4);
 
             return new APIGatewayProxyResponseEvent()
                     .withStatusCode(200)

@@ -6,18 +6,18 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import redis.clients.jedis.Jedis;
 import java.util.List;
 import java.util.Map;
+import static com.example.converter.RedisClient.RECENTS_LIST_NAME;
+import static com.example.converter.RedisClient.JEDIS;
+
 
 public class GetRecentsLambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-    private static final String RECENTS_LIST_NAME = "recents";
-    private final Jedis jedis = new Jedis(System.getenv("REDIS_HOST"), 6379);
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
-        List<String> recentConversions = jedis.lrange(RECENTS_LIST_NAME, 0, 4);
+        List<String> recentConversions = JEDIS.lrange(RECENTS_LIST_NAME, 0, 4);
         List<List<String>> list = recentConversions.stream()
                 .map(conversion -> conversion.split("="))
                 .map(parts -> List.of(parts[0], parts[1]))
